@@ -17,6 +17,7 @@ class SettingsController extends GetxController {
   @override
   void onInit() {
     API.header['accesstoken'] = Preferences.getString(Preferences.accesstoken);
+    Preferences.setString(Preferences.languageCodeKey, "en");
     getSettingsData();
     super.onInit();
   }

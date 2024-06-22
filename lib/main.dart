@@ -69,9 +69,9 @@ void main() async {
       AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
     }
   }
- SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: ConstantColors.primary,
-    ));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: ConstantColors.primary,
+  ));
   runApp(MyApp());
 }
 
@@ -153,9 +153,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     setupInteractedMessage(context);
     Future.delayed(const Duration(seconds: 3), () {
-      // if (Preferences.getString(Preferences.languageCodeKey).toString().isNotEmpty) {
-      //   LocalizationService().changeLocale(Preferences.getString(Preferences.languageCodeKey).toString());
-      // }
+      Preferences.setString(Preferences.languageCodeKey, "en");
+      if (Preferences.getString(Preferences.languageCodeKey).toString().isNotEmpty) {
+        LocalizationService().changeLocale(Preferences.getString(Preferences.languageCodeKey).toString());
+      }
       API.header['accesstoken'] = Preferences.getString(Preferences.accesstoken);
     });
     return GetMaterialApp(
@@ -178,13 +179,11 @@ class MyApp extends StatelessWidget {
         init: SettingsController(),
         builder: (controller) {
           return
-          //  Preferences.getString(Preferences.languageCodeKey).toString().isEmpty
-          //     ? const LocalizationScreens(intentType: "main")
-          //     : 
+              //  Preferences.getString(Preferences.languageCodeKey).toString().isEmpty
+              //     ? const LocalizationScreens(intentType: "main")
+              //     :
               Preferences.getBoolean(Preferences.isFinishOnBoardingKey)
-                  ? Preferences.getBoolean(Preferences.isLogin)
-                      ? DashBoard()
-                      : const LoginScreen()
+                  ? (Preferences.getBoolean(Preferences.isLogin) ? DashBoard() : const LoginScreen())
                   : const OnBoardingScreen();
         },
       ),
