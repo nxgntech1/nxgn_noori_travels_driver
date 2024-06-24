@@ -207,10 +207,12 @@ class DashBoard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Image.asset(
-                          "assets/icons/ic_side_menu.png",
-                          color: controller.selectedDrawerIndex.value != 0?Colors.white:Colors.black,
-                        )),
+                        child: Icon(Icons.menu_rounded,color: controller.selectedDrawerIndex.value != 0?Colors.white:Colors.black,)
+                        // Image.asset(
+                        //   "assets/icons/ic_side_menu.png",
+                        //   color: controller.selectedDrawerIndex.value != 0?Colors.white:Colors.black,
+                        // )
+                        ),
                   ),
                 );
               }),
@@ -237,77 +239,85 @@ class DashBoard extends StatelessWidget {
       ));
     }
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
+         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          controller.userModel == null
-              ? Center(
-                  child: CircularProgressIndicator(color: ConstantColors.primary),
-                )
-              : UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                    color: ConstantColors.primary,
-                  ),
-                  currentAccountPicture: ClipOval(
-                    child: Container(
-                      color: Colors.white,
-                      child: CachedNetworkImage(
-                        imageUrl: controller.userModel.value.userData!.photoPath.toString(),
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) => const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Image.asset(
-                          "assets/images/appIcon.png",
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                controller.userModel == null
+                    ? Center(
+                        child: CircularProgressIndicator(color: ConstantColors.primary),
+                      )
+                    : UserAccountsDrawerHeader(
+                        decoration: BoxDecoration(
+                          color: ConstantColors.primary,
                         ),
-                      ),
-                    ),
+                        currentAccountPicture: ClipOval(
+                          child: Container(
+                            color: Colors.white,
+                            child: CachedNetworkImage(
+                              imageUrl: controller.userModel.value.userData!.photoPath.toString(),
+                              fit: BoxFit.fill,
+                              placeholder: (context, url) => const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Image.asset(
+                                "assets/images/appIcon.png",
+                              ),
+                            ),
+                          ),
+                        ),
+                        accountName: Text('${controller.userModel.value.userData!.prenom.toString()} ${controller.userModel.value.userData!.nom.toString()}',
+                            style: const TextStyle(color: Colors.black)),
+                        accountEmail: Row(
+                          children: [
+                            Expanded(child: Text(controller.userModel.value.userData!.email.toString(), style: const TextStyle(color: Colors.black))),
+                            // SizedBox(
+                            //   height: 20,
+                            //   width: 50,
+                            //   child: Switch(
+                            //       value: controller.isActive.value,
+                            //       activeColor: ConstantColors.blue,
+                            //       inactiveThumbColor: Colors.red,
+                            //       onChanged: (value) {
+                            //         controller.isActive.value = value;
+                            //
+                            //         Map<String, dynamic> bodyParams = {
+                            //           'id_driver': Preferences.getInt(Preferences.userId),
+                            //           'online': controller.isActive.value ? 'yes' : 'no',
+                            //         };
+                            //
+                            //         controller.changeOnlineStatus(bodyParams).then((value) {
+                            //           if (value != null) {
+                            //             if (value['success'] == "success") {
+                            //               UserModel userModel = Constant.getUserData();
+                            //               userModel.userData!.online = value['data']['online'];
+                            //               Preferences.setString(Preferences.user, jsonEncode(userModel.toJson()));
+                            //               controller.getUsrData();
+                            //               ShowToastDialog.showToast(value['message']);
+                            //             } else {
+                            //               ShowToastDialog.showToast(value['error']);
+                            //             }
+                            //           }
+                            //         });
+                            //         //Do you things
+                            //       }),
+                            // )
+                          ],
+                        )),
+                Column(children: drawerOptions),
+                
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    'V : ${Constant.appVersion.toString()}     ',
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  accountName: Text('${controller.userModel.value.userData!.prenom.toString()} ${controller.userModel.value.userData!.nom.toString()}',
-                      style: const TextStyle(color: Colors.black)),
-                  accountEmail: Row(
-                    children: [
-                      Expanded(child: Text(controller.userModel.value.userData!.email.toString(), style: const TextStyle(color: Colors.black))),
-                      // SizedBox(
-                      //   height: 20,
-                      //   width: 50,
-                      //   child: Switch(
-                      //       value: controller.isActive.value,
-                      //       activeColor: ConstantColors.blue,
-                      //       inactiveThumbColor: Colors.red,
-                      //       onChanged: (value) {
-                      //         controller.isActive.value = value;
-                      //
-                      //         Map<String, dynamic> bodyParams = {
-                      //           'id_driver': Preferences.getInt(Preferences.userId),
-                      //           'online': controller.isActive.value ? 'yes' : 'no',
-                      //         };
-                      //
-                      //         controller.changeOnlineStatus(bodyParams).then((value) {
-                      //           if (value != null) {
-                      //             if (value['success'] == "success") {
-                      //               UserModel userModel = Constant.getUserData();
-                      //               userModel.userData!.online = value['data']['online'];
-                      //               Preferences.setString(Preferences.user, jsonEncode(userModel.toJson()));
-                      //               controller.getUsrData();
-                      //               ShowToastDialog.showToast(value['message']);
-                      //             } else {
-                      //               ShowToastDialog.showToast(value['error']);
-                      //             }
-                      //           }
-                      //         });
-                      //         //Do you things
-                      //       }),
-                      // )
-                    ],
-                  )),
-          Column(children: drawerOptions),
-          // Container(
-          //   color: Colors.red,
-          //   child: Text(
-          //     'V : ${Constant.appVersion.toString()}     ',
-          //     textAlign: TextAlign.right,
-          //     style: const TextStyle(fontSize: 16),
-          //   ),
-          // ),
+                ),
         ],
       ),
     );
@@ -326,7 +336,7 @@ class DashBoard extends StatelessWidget {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('To start earning with Noori you need to fill in your Document information'.tr),
+                Text('Your document verification is currently in progress. You will receive a call once it is verified and receive the ride notification'.tr),
               ],
             ),
           ),

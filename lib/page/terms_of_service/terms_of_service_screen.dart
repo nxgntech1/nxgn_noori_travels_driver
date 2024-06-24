@@ -19,7 +19,7 @@ class TermsOfServiceScreen extends StatelessWidget {
             child:CustomAppBar(title: "term_service"),
           ),
             body: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.only(right: 15.0),
               child: Obx(() => controller.data.value.isNotEmpty
                   ? SingleChildScrollView(
                       child: Html(

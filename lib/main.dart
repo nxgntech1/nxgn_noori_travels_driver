@@ -105,6 +105,9 @@ class MyApp extends StatelessWidget {
           dashBoardController.selectedDrawerIndex.value = 4;
           await Get.to(DashBoard());
         }
+        else{
+          await Get.to(DashBoard());
+        }
       }
     });
     await FirebaseMessaging.instance.subscribeToTopic("nxgn_nooritravels_driver");
@@ -161,7 +164,7 @@ class MyApp extends StatelessWidget {
     });
     return GetMaterialApp(
       navigatorKey: navigatorKey,
-      title: 'CabMe Driver',
+      title: 'Noori Driver',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: false,

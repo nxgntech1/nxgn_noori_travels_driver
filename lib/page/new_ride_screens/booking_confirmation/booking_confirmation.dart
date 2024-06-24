@@ -61,7 +61,7 @@ class BookingConfirmation extends StatelessWidget {
                 const SizedBox(height: 15),
                 Center(
                   child: Text(
-                    "Your booking completed   $bookforOthersName  \n  We will share you the invoice",
+                    "Your booking completed $bookforOthersName",
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
                   ),

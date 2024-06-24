@@ -37,7 +37,7 @@ class DocumentStatusScreen extends StatelessWidget {
                    crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10,),
-                    const Text("     Document details",style: TextStyle(fontSize:16,color: Color(0xff9090AD)),),
+                    //const Text("     Document details",style: TextStyle(fontSize:16,color: Color(0xff9090AD)),),
                     ListView.builder(
                         itemCount: controller.documentList.length,
                         shrinkWrap: true,

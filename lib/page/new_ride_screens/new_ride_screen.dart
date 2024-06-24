@@ -317,7 +317,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
@@ -337,7 +337,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                           ),
                                         ),
                                         Text(Constant().amountShow(amount: data.montant.toString()),
-                                            style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 12)),
+                                            style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
                                       ],
                                     ),
                                   ),
@@ -346,7 +346,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
@@ -367,7 +367,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                           padding: const EdgeInsets.only(top: 8.0),
                                           child: Text(
                                               "${double.parse(data.distance.toString()).toStringAsFixed(int.parse(Constant.decimal!))} ${Constant.distanceUnit}",
-                                              style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 12)),
+                                              style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
                                         ),
                                       ],
                                     ),
@@ -377,7 +377,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
@@ -397,7 +397,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                         Padding(
                                           padding: const EdgeInsets.only(top: 8.0),
                                           child:
-                                              Text("${data.duree}", style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 12)),
+                                              Text("${data.duree}", style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
                                         ),
                                         // Padding(
                                         //   padding: const EdgeInsets.only(top: 8.0),
@@ -669,6 +669,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                   btnColor: ConstantColors.primary,
                                   txtColor: Colors.white,
                                   onPress: () async {
+                                    
                                     await buildOTPBottomSheet(context, controller, data);
 
                                     /*URL : https://nadmin.nxgnapp.com/api/v1/changestatus-arrived
@@ -1277,7 +1278,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
 buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller, data) {
   controller.odoStartController = TextEditingController();
   return showModalBottomSheet(
-      isDismissible: false,
+      //isDismissible: false,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
@@ -1372,7 +1373,7 @@ buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller
 buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, RideData data) {
   controller.odoEndController = TextEditingController();
   return showModalBottomSheet(
-      isDismissible: false,
+      //isDismissible: false,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
@@ -1485,7 +1486,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                               "ride_date": data.ride_required_on_date.toString(),
                               "ride_time": data.duree.toString(),
                               "bookfor_others_mobileno": data.bookOherMobileNumber.toString(),
-                              "bookfor_others_name": data.bookOtherName.toString(),
+                              "bookfor_others_name":"${(data.bookOtherName != "")?data.bookOtherName:data.consumer_name}",
                             },
                           );
                         }
@@ -1502,7 +1503,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
       });
 }
 
-buildCashCollectBottomSheet(BuildContext context, NewRideController controller, data) {
+buildCashCollectBottomSheet(BuildContext context, NewRideController controller,RideData data) {
   return showModalBottomSheet(
       isDismissible: false,
       backgroundColor: Colors.transparent,
@@ -1533,14 +1534,14 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller, 
                         height: 20,
                       ),
                       Text(
-                        "${data.prenom} to pay in cash",
+                        "${(data.bookOtherName != "")?data.bookOtherName:data.consumer_name} to pay in cash",
                         style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(
-                  height: 150,
+                  height: 140,
                 ),
                 Container(
                   padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -1573,7 +1574,7 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller, 
 buildOTPBottomSheet(BuildContext context, NewRideController controller, data) {
   controller.otpController = TextEditingController();
   return showModalBottomSheet(
-      isDismissible: false,
+      //isDismissible: false,
       backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {

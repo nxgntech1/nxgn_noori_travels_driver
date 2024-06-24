@@ -95,6 +95,7 @@ class RideData {
   String? bookOherMobileNumber;
   String? bookingtype;
   String? ride_required_on_date;
+  String? consumer_name;
 
   RideData({
     this.id,
@@ -158,7 +159,8 @@ class RideData {
     this.bookOherMobileNumber,
     this.bookOtherName,
     this.bookingtype,
-    this.ride_required_on_date
+    this.ride_required_on_date,
+    this.consumer_name
   });
 
   RideData.fromJson(Map<String, dynamic> json) {
@@ -240,6 +242,8 @@ class RideData {
     bookOtherName = json['bookfor_others_name'].toString();
     bookingtype = json['bookingtype'].toString();
     ride_required_on_date = json['ride_required_on_date'].toString();
+    consumer_name = json['consumer_name'].toString();
+    
     
 
     taxModel = taxList;
@@ -306,6 +310,7 @@ class RideData {
     data['bookfor_others_mobileno'] = bookOherMobileNumber;
     data['bookingtype'] = bookOtherName;
     data['ride_required_on_date'] = ride_required_on_date;
+    data['consumer_name'] = consumer_name;
     if (userInfo != null) {
       data['user_info'] = userInfo!.toJson();
     }
