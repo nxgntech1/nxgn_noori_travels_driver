@@ -574,35 +574,35 @@ class TripHistoryScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Admin commission".tr,
-                                  style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Text(
-                                "(-${Constant().amountShow(amount: controller.adminCommission.value.toString())})",
-                                style: const TextStyle(letterSpacing: 1.0, color: Colors.red, fontWeight: FontWeight.w600),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Note : Admin commission will be debited from your wallet balance. \nAdmin commission will apply on trip Amount minus Discount(If applicable).".tr,
-                            style: const TextStyle(color: Colors.red),
-                          )
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Row(
+                    //         children: [
+                    //           Expanded(
+                    //             child: Text(
+                    //               "Admin commission".tr,
+                    //               style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
+                    //             ),
+                    //           ),
+                    //           Text(
+                    //             "(-${Constant().amountShow(amount: controller.adminCommission.value.toString())})",
+                    //             style: const TextStyle(letterSpacing: 1.0, color: Colors.red, fontWeight: FontWeight.w600),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 10,
+                    //       ),
+                    //       Text(
+                    //         "Note : Admin commission will be debited from your wallet balance. \nAdmin commission will apply on trip Amount minus Discount(If applicable).".tr,
+                    //         style: const TextStyle(color: Colors.red),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

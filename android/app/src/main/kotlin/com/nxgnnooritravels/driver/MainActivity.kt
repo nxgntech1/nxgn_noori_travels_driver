@@ -1,4 +1,4 @@
-package com.nxgn_nooritravels_driver
+package com.nxgnnooritravels.driver
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

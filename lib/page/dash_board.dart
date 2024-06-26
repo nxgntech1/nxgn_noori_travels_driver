@@ -268,10 +268,10 @@ class DashBoard extends StatelessWidget {
                           ),
                         ),
                         accountName: Text('${controller.userModel.value.userData!.prenom.toString()} ${controller.userModel.value.userData!.nom.toString()}',
-                            style: const TextStyle(color: Colors.black)),
+                            style: const TextStyle(color: Colors.white)),
                         accountEmail: Row(
                           children: [
-                            Expanded(child: Text(controller.userModel.value.userData!.email.toString(), style: const TextStyle(color: Colors.black))),
+                            Expanded(child: Text(controller.userModel.value.userData!.email.toString(), style: const TextStyle(color: Colors.white))),
                             // SizedBox(
                             //   height: 20,
                             //   width: 50,

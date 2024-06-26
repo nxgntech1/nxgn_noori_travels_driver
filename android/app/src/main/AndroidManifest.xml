@@ -32,7 +32,7 @@
     <application android:name="${applicationName}" android:icon="@mipmap/ic_launcher" android:label="Noori Driver" tools:replace="android:label">
         <service android:name=".MyService" android:enabled="true" android:exported="false" android:foregroundServiceType="location" android:stopWithTask="false"/>
 
-        <activity android:name="com.nxgn_nooritravels_driver.MainActivity" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:exported="true" android:hardwareAccelerated="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:windowSoftInputMode="adjustResize">
+        <activity android:name="com.nxgnnooritravels.driver.MainActivity" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:exported="true" android:hardwareAccelerated="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues

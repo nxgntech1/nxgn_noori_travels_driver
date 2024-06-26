@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -400,7 +400,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nxgn_nooritravels_driver.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nxgnnooritravels.driver.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -545,7 +545,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nxgn_nooritravels_driver.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nxgnnooritravels.driver.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -579,7 +579,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 6.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nxgn_nooritravels_driver.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nxgnnooritravels.driver.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
