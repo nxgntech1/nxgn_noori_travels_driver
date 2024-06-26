@@ -10,6 +10,7 @@ class LocationPermissionDisclosureDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      
       title: const Text('Location Access Disclosure'),
       content: const SingleChildScrollView(
         child: Column(
@@ -37,7 +38,7 @@ class LocationPermissionDisclosureDialog extends StatelessWidget {
         ),
         MaterialButton(
           onPressed: () {
-            SystemNavigator.pop();
+            Get.back();
           },
           child: const Text('Decline', style: TextStyle(color: Colors.red)),
         ),

@@ -165,6 +165,7 @@ class MyProfileScreen extends StatelessWidget {
                             iconData: Icons.person_outline,
                             isEditIcon: true,
                             onPress: () {
+                              nameController.text = myProfileController.name.toString();
                               buildAlertChangeData(
                                 context,
                                 onSubmitBtn: () {
@@ -193,7 +194,7 @@ class MyProfileScreen extends StatelessWidget {
                                   }
                                 },
                                 controller: nameController,
-                                title: "Name".tr,
+                                title: "First Name".tr,
                                 validators: (String? value) {
                                   if (value != null || value!.isNotEmpty) {
                                     return null;
@@ -211,6 +212,7 @@ class MyProfileScreen extends StatelessWidget {
                             iconData: Icons.person_outline,
                             isEditIcon: true,
                             onPress: () {
+                              lastNameController.text = myProfileController.lastName.toString();
                               buildAlertChangeData(
                                 context,
                                 onSubmitBtn: () {

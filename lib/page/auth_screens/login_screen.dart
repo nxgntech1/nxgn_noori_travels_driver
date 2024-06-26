@@ -116,6 +116,7 @@ class LoginScreen extends StatelessWidget {
                                       txtColor: Colors.white,
                                       onPress: () async {
                                         FocusScope.of(context).unfocus();
+                                        if(controller.emailValid(_emailController.text.trim())){
                                         if (_formKey.currentState!.validate()) {
                                           Map<String, String> bodyParams = {
                                             'email': _emailController.text.trim(),
@@ -169,6 +170,10 @@ class LoginScreen extends StatelessWidget {
                                               }
                                             }
                                           });
+                                        }
+                                        }
+                                        else{
+                                         ShowToastDialog.showToast("Enter valid email");
                                         }
                                       },
                                     )),
@@ -261,6 +266,7 @@ class LoginScreen extends StatelessWidget {
   showDialogPermission(BuildContext context) {
     showDialog(
       context: context,
+       barrierDismissible: false,
       builder: (context) => const LocationPermissionDisclosureDialog(),
     );
   }

@@ -117,6 +117,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
             Get.to(const RouteViewScreen(), arguments: argumentData);
           } else {
             String googleUrl = "";
+            await controller.getCurrentLocation();
             if (data.statut == "Start Trip") {
                googleUrl =
                   'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}';
@@ -165,7 +166,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                   children: [
                     Row(
                       children: [
-                        ClipRRect(
+                        (data.vehicleImage!= null && data.vehicleImage != "null")?ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: CachedNetworkImage(
                             // imageUrl: controller.data.value.vehicleImageid.toString(),
@@ -175,10 +176,16 @@ class _NewRideScreenState extends State<NewRideScreen> {
                             fit: BoxFit.cover,
                             placeholder: (context, url) => Constant.loader(),
                             errorWidget: (context, url, error) => Image.asset(
+                              height: 50,
+                            width: 50,
                               "assets/images/appIcon.png",
                             ),
                           ),
-                        ),
+                        ):Image.asset(
+                          height: 50,
+                            width: 50,
+                              "assets/images/appIcon.png",
+                            ),
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
@@ -420,7 +427,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Row(
                         children: [
-                          ClipRRect(
+                         (data.photoPath!= null && data.photoPath!= "null")?ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: CachedNetworkImage(
                               imageUrl: data.photoPath.toString(),
@@ -432,7 +439,11 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                 "assets/images/appIcon.png",
                               ),
                             ),
-                          ),
+                          ):Image.asset(
+                          height: 50,
+                            width: 50,
+                              "assets/images/appIcon.png",
+                            ),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
@@ -874,7 +885,6 @@ class _NewRideScreenState extends State<NewRideScreen> {
                           // //                             borderRadius: BorderRadius.circular(20),
                           // //                           ),
                           // //                           elevation: 0,
-                          // //                           backgroundColor: Colors.transparent,
                           // //                           child: Container(
                           // //                             height: 200,
                           // //                             padding: const EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 20),
@@ -1279,7 +1289,6 @@ buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller
   controller.odoStartController = TextEditingController();
   return showModalBottomSheet(
       //isDismissible: false,
-      backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
         return Padding(
@@ -1374,7 +1383,6 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
   controller.odoEndController = TextEditingController();
   return showModalBottomSheet(
       //isDismissible: false,
-      backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
         return Padding(
@@ -1506,7 +1514,6 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
 buildCashCollectBottomSheet(BuildContext context, NewRideController controller,RideData data) {
   return showModalBottomSheet(
       isDismissible: false,
-      backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
         return StatefulBuilder(builder: (context, setState) {
@@ -1527,7 +1534,7 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller,R
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "₹ ${data.montant}",
+                        "₹${(double.parse(data.montant!)).round().toString()}",
                         style: const TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(
@@ -1575,7 +1582,6 @@ buildOTPBottomSheet(BuildContext context, NewRideController controller, data) {
   controller.otpController = TextEditingController();
   return showModalBottomSheet(
       //isDismissible: false,
-      backgroundColor: Colors.transparent,
       context: context,
       builder: (context) {
         return Padding(

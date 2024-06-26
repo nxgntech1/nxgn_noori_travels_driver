@@ -81,6 +81,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                             txtColor: Colors.white,
                             onPress: () {
                               FocusScope.of(context).unfocus();
+                              if(controller.emailValid(_emailTextEditController.text.trim())){
                               if (_formKey.currentState!.validate()) {
                                 Map<String, String> bodyParams = {
                                   'email': _emailTextEditController.text.trim(),
@@ -98,6 +99,10 @@ class ForgotPasswordScreen extends StatelessWidget {
                                     }
                                   }
                                 });
+                              }
+                              }
+                              else{
+                                ShowToastDialog.showToast("Enter valid email");
                               }
                             },
                           )),

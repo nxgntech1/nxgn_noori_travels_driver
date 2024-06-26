@@ -3,6 +3,7 @@ import 'package:cabme_driver/controller/payment_controller.dart';
 import 'package:cabme_driver/model/tax_model.dart';
 import 'package:cabme_driver/themes/constant_colors.dart';
 import 'package:cabme_driver/widget/StarRating.dart';
+import 'package:cabme_driver/widget/appbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,38 +18,10 @@ class TripHistoryScreen extends StatelessWidget {
         builder: (controller) {
           return Scaffold(
             backgroundColor: ConstantColors.background,
-            appBar: AppBar(
-                backgroundColor: ConstantColors.background,
-                elevation: 0,
-                centerTitle: true,
-                title: Text("Trip Details".tr, style: const TextStyle(color: Colors.black)),
-                leading: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 4),
-                          child: Icon(
-                            Icons.arrow_back_ios_rounded,
-                            color: Colors.black,
-                          ),
-                        )),
-                  ),
-                )),
+            appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child:CustomAppBar(title: "Trip Details"),
+          ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: SingleChildScrollView(
@@ -196,37 +169,37 @@ class TripHistoryScreen extends StatelessWidget {
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 5.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Colors.black12,
-                                              ),
-                                              borderRadius: const BorderRadius.all(Radius.circular(10))),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 20),
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  'assets/icons/passenger.png',
-                                                  height: 22,
-                                                  width: 22,
-                                                  color: ConstantColors.yellow,
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 8.0),
-                                                  child: Text(" ${controller.data.value.numberPoeple.toString()}",
-                                                      //DateFormat('\$ KK:mm a, dd MMM yyyy').format(date),
-                                                      style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54)),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    // Expanded(
+                                    //   child: Padding(
+                                    //     padding: const EdgeInsets.only(left: 5.0),
+                                    //     child: Container(
+                                    //       decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //             color: Colors.black12,
+                                    //           ),
+                                    //           borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                    //       child: Padding(
+                                    //         padding: const EdgeInsets.symmetric(vertical: 20),
+                                    //         child: Column(
+                                    //           children: [
+                                    //             Image.asset(
+                                    //               'assets/icons/passenger.png',
+                                    //               height: 22,
+                                    //               width: 22,
+                                    //               color: ConstantColors.yellow,
+                                    //             ),
+                                    //             Padding(
+                                    //               padding: const EdgeInsets.only(top: 8.0),
+                                    //               child: Text(" ${controller.data.value.numberPoeple.toString()}",
+                                    //                   //DateFormat('\$ KK:mm a, dd MMM yyyy').format(date),
+                                    //                   style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54)),
+                                    //             ),
+                                    //           ],
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 5.0),
@@ -342,8 +315,8 @@ class TripHistoryScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                     child: CachedNetworkImage(
                                       imageUrl: controller.data.value.photoPath.toString(),
-                                      height: 80,
-                                      width: 80,
+                                      height: 60,
+                                      width: 60,
                                       fit: BoxFit.cover,
                                       placeholder: (context, url) => Constant.loader(),
                                       errorWidget: (context, url, error) => Image.asset('assets/images/appIcon.png'),
@@ -360,15 +333,21 @@ class TripHistoryScreen extends StatelessWidget {
                                                 Text('${controller.data.value.userInfo!.email}', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w400)),
                                               ],
                                             )
-                                          : Column(
+                                          : 
+                                          Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text("${controller.data.value.prenom.toString()} ${controller.data.value.nom.toString()}",
                                                     style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                                                StarRating(
-                                                    size: 18,
-                                                    rating: controller.data.value.moyenneDriver != "null" ? double.parse(controller.data.value.moyenneDriver.toString()) : 0.0,
-                                                    color: ConstantColors.yellow),
+                                                // StarRating(
+                                                //     size: 18,
+                                                //     rating: controller.data.value.moyenneDriver != "null" ? double.parse(controller.data.value.moyenneDriver.toString()) : 0.0,
+                                                //     color: ConstantColors.yellow),
+                                                if (controller.data.value.ride_required_on_date != null)
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 5.0),
+                                                    child: Text(controller.data.value.ride_required_on_date.toString(), style: const TextStyle(color: Colors.black26, fontWeight: FontWeight.w600)),
+                                                  ),
                                               ],
                                             ),
                                     ),
@@ -411,11 +390,7 @@ class TripHistoryScreen extends StatelessWidget {
                                           ),
                                         ],
                                       ),
-                                      if (controller.data.value.dateRetour != null)
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 5.0),
-                                          child: Text(controller.data.value.dateRetour.toString(), style: const TextStyle(color: Colors.black26, fontWeight: FontWeight.w600)),
-                                        ),
+                                      
                                     ],
                                   )
                                 ],
@@ -454,60 +429,60 @@ class TripHistoryScreen extends StatelessWidget {
                                       style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w800)),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                child: Divider(
-                                  color: Colors.black.withOpacity(0.40),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Text(
-                                    "Discount".tr,
-                                    style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
-                                  )),
-                                  Text("(-${Constant().amountShow(amount: controller.discountAmount.value.toString())})",
-                                      style: const TextStyle(letterSpacing: 1.0, color: Colors.red, fontWeight: FontWeight.w800)),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                child: Divider(
-                                  color: Colors.black.withOpacity(0.40),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(vertical: 3.0),
+                              //   child: Divider(
+                              //     color: Colors.black.withOpacity(0.40),
+                              //   ),
+                              // ),
+                              // Row(
+                              //   children: [
+                              //     Expanded(
+                              //         child: Text(
+                              //       "Discount".tr,
+                              //       style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
+                              //     )),
+                              //     Text("(-${Constant().amountShow(amount: controller.discountAmount.value.toString())})",
+                              //         style: const TextStyle(letterSpacing: 1.0, color: Colors.red, fontWeight: FontWeight.w800)),
+                              //   ],
+                              // ),
+                              // Padding(
+                              //   padding: const EdgeInsets.symmetric(vertical: 3.0),
+                              //   child: Divider(
+                              //     color: Colors.black.withOpacity(0.40),
+                              //   ),
+                              // ),
 
-                              ListView.builder(
-                                itemCount: controller.data.value.taxModel!.length,
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  TaxModel taxModel = controller.data.value.taxModel![index];
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '${taxModel.libelle.toString()} (${taxModel.type == "Fixed" ? Constant().amountShow(amount: taxModel.value) : "${taxModel.value}%"})',
-                                            style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
-                                          ),
-                                          Text(Constant().amountShow(amount: controller.calculateTax(taxModel: taxModel).toString()),
-                                              style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w800)),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                        child: Divider(
-                                          color: Colors.black.withOpacity(0.40),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
+                              // ListView.builder(
+                              //   itemCount: controller.data.value.taxModel!.length,
+                              //   shrinkWrap: true,
+                              //   padding: EdgeInsets.zero,
+                              //   physics: const NeverScrollableScrollPhysics(),
+                              //   itemBuilder: (context, index) {
+                              //     TaxModel taxModel = controller.data.value.taxModel![index];
+                              //     return Column(
+                              //       children: [
+                              //         Row(
+                              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //           children: [
+                              //             Text(
+                              //               '${taxModel.libelle.toString()} (${taxModel.type == "Fixed" ? Constant().amountShow(amount: taxModel.value) : "${taxModel.value}%"})',
+                              //               style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
+                              //             ),
+                              //             Text(Constant().amountShow(amount: controller.calculateTax(taxModel: taxModel).toString()),
+                              //                 style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w800)),
+                              //           ],
+                              //         ),
+                              //         Padding(
+                              //           padding: const EdgeInsets.symmetric(vertical: 3.0),
+                              //           child: Divider(
+                              //             color: Colors.black.withOpacity(0.40),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     );
+                              //   },
+                              // ),
 
                               // Row(
                               //   children: [
@@ -530,50 +505,50 @@ class TripHistoryScreen extends StatelessWidget {
                               //   ],
                               // ),
 
-                              Visibility(
-                                visible: controller.tipAmount.value == 0 ? false : true,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                            child: Text(
-                                          "Driver Tip".tr,
-                                          style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
-                                        )),
-                                        Text(Constant().amountShow(amount: controller.tipAmount.value.toString()),
-                                            style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w800)),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                                      child: Divider(
-                                        color: Colors.black.withOpacity(0.40),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Visibility(
+                              //   visible: controller.tipAmount.value == 0 ? false : true,
+                              //   child: Column(
+                              //     children: [
+                              //       Row(
+                              //         children: [
+                              //           Expanded(
+                              //               child: Text(
+                              //             "Driver Tip".tr,
+                              //             style: TextStyle(letterSpacing: 1.0, color: ConstantColors.subTitleTextColor, fontWeight: FontWeight.w600),
+                              //           )),
+                              //           Text(Constant().amountShow(amount: controller.tipAmount.value.toString()),
+                              //               style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w800)),
+                              //         ],
+                              //       ),
+                              //       Padding(
+                              //         padding: const EdgeInsets.symmetric(vertical: 3.0),
+                              //         child: Divider(
+                              //           color: Colors.black.withOpacity(0.40),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
 
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Text(
-                                    "Total".tr,
-                                    style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w600),
-                                  )),
-                                  Text(Constant().amountShow(amount: controller.getTotalAmount().toString()),
-                                      style: TextStyle(letterSpacing: 1.0, color: ConstantColors.primary, fontWeight: FontWeight.w800)),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Expanded(
+                              //         child: Text(
+                              //       "Total".tr,
+                              //       style: TextStyle(letterSpacing: 1.0, color: ConstantColors.titleTextColor, fontWeight: FontWeight.w600),
+                              //     )),
+                              //     Text(Constant().amountShow(amount: controller.getTotalAmount().toString()),
+                              //         style: TextStyle(letterSpacing: 1.0, color: ConstantColors.primary, fontWeight: FontWeight.w800)),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
                     // Padding(
                     //   padding: const EdgeInsets.all(8.0),
                     //   child: Column(

@@ -30,7 +30,6 @@ class CustomAlertDialogState extends State<CustomAlertDialog> {
         borderRadius: BorderRadius.circular(20),
       ),
       elevation: 0,
-      backgroundColor: Colors.transparent,
       child: contentBox(context),
     );
   }

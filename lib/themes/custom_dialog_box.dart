@@ -19,7 +19,6 @@ class CustomDialogBoxState extends State<CustomDialogBox> {
         borderRadius: BorderRadius.circular(20),
       ),
       elevation: 0,
-      backgroundColor: Colors.transparent,
       child: contentBox(context),
     );
   }
@@ -34,7 +33,6 @@ class CustomDialogBoxState extends State<CustomDialogBox> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           CircleAvatar(
-            backgroundColor: Colors.transparent,
             radius: 45,
             child: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(45)), child: widget.img),
           ),

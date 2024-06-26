@@ -46,4 +46,8 @@ class LoginController extends GetxController {
     ShowToastDialog.closeLoader();
     return null;
   }
+
+  bool emailValid(text){
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(text); 
+  }
 }

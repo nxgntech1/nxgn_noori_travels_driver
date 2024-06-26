@@ -625,7 +625,6 @@ class _RouteViewScreenState extends State<RouteViewScreen> {
                                                     borderRadius: BorderRadius.circular(20),
                                                   ),
                                                   elevation: 0,
-                                                  backgroundColor: Colors.transparent,
                                                   child: Container(
                                                     height: 200,
                                                     padding: const EdgeInsets.only(left: 10, top: 20, right: 10, bottom: 20),

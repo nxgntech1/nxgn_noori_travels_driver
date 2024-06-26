@@ -52,10 +52,12 @@ class NewRideController extends GetxController {
 
   getCurrentLocation() async {
    // LocationData location = await currentLocation.getLocation();
+   ShowToastDialog.showLoader("Please wait");
 final locationData = await Geolocator.getCurrentPosition();
-
     driverLatitude.value = locationData.latitude;
     driverLongitude.value = locationData.longitude;
+ ShowToastDialog.closeLoader();
+
   }
 
   Future<String?> getDistanceFromDrivertoUser(userLat, userLong) async {

@@ -59,9 +59,9 @@ class BookingConfirmation extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 15),
-                Center(
-                  child: Text(
-                    "Your booking completed $bookforOthersName",
+                const Center(
+                  child:  Text(
+                    "Your trip completed",
                     textAlign: TextAlign.center,
                     style: const TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
                   ),
@@ -183,30 +183,31 @@ class BookingConfirmation extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 35),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ButtonThem.buildButton(
-                          context,
-                          btnHeight: 40,
-                          title: "Home",
-                          btnColor: ConstantColors.primary,
-                          txtColor: Colors.white,
-                          onPress: () {
-                            // if (mounted) {
-                            Get.back();
-                            // }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 15,left: 15,right: 15,top: 15),
+        child: Row(
+          children: [
+            Expanded(
+              child: ButtonThem.buildButton(
+                context,
+                btnHeight: 40,
+                title: "Home",
+                btnColor: ConstantColors.primary,
+                txtColor: Colors.white,
+                onPress: () {
+                  // if (mounted) {
+                  Get.back();
+                  // }
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

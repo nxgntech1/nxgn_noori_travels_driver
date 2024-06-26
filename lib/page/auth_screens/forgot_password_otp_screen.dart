@@ -56,10 +56,11 @@ class ForgotPasswordOtpScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 30, right: 50, left: 50),
                           child: Pinput(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             controller: textEditingController,
                             defaultPinTheme: PinTheme(
-                              height: 50,
-                              width: 50,
+                              height: 60,
+                              width: 60,
                               textStyle: const TextStyle(letterSpacing: 0.60, fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
                               // margin: EdgeInsets.all(10),
                               decoration: BoxDecoration(
@@ -109,7 +110,7 @@ class ForgotPasswordOtpScreen extends StatelessWidget {
                             obscureText: false,
                             contentPadding: EdgeInsets.zero,
                             validators: (String? value) {
-                              if (value!.length >= 6) {
+                              if (value!.length >= 4) {
                                 return null;
                               } else {
                                 return 'Password required at least 6 characters'.tr;
@@ -144,26 +145,32 @@ class ForgotPasswordOtpScreen extends StatelessWidget {
                               txtColor: Colors.white,
                               onPress: () {
                                 FocusScope.of(context).unfocus();
-                                if (_formKey.currentState!.validate()) {
-                                  Map<String, String> bodyParams = {
-                                    'email': email.toString(),
-                                    'otp': textEditingController.text.trim(),
-                                    'new_password': _passwordController.text.trim(),
-                                    'confirm_password': _passwordController.text.trim(),
-                                    'user_cat': "driver",
-                                  };
-                                  controller.resetPassword(bodyParams).then((value) {
-                                    if (value != null) {
-                                      if (value == true) {
-                                        Get.offAll(LoginScreen(),
-                                            duration: const Duration(milliseconds: 400), //duration of transitions, default 1 sec
-                                            transition: Transition.rightToLeft);
-                                        ShowToastDialog.showToast("Password change successfully!".tr);
-                                      } else {
-                                        ShowToastDialog.showToast("Please try again later".tr);
+                                if (textEditingController.text.length == 4) {
+                                  if (_formKey.currentState!.validate()) {
+                                    Map<String, String> bodyParams = {
+                                      'email': email.toString(),
+                                      'otp': textEditingController.text.trim(),
+                                      'new_password': _passwordController.text.trim(),
+                                      'confirm_password': _passwordController.text.trim(),
+                                      'user_cat': "driver",
+                                    };
+                                    controller.resetPassword(bodyParams).then((value) {
+                                      if (value != null) {
+                                        if (value == true) {
+                                          Get.offAll(LoginScreen(),
+                                              duration: const Duration(milliseconds: 400), //duration of transitions, default 1 sec
+                                              transition: Transition.rightToLeft);
+                                          ShowToastDialog.showToast("Password change successfully!".tr);
+                                        } else {
+                                          ShowToastDialog.showToast("Please try again later".tr);
+                                        }
                                       }
-                                    }
-                                  });
+                                    });
+                                  }
+                                }
+                                else{
+                                      ShowToastDialog.showToast("Something want wrong. Please try again later".tr);
+                                
                                 }
                               },
                             )),
