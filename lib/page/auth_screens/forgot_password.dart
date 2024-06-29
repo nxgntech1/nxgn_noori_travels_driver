@@ -62,10 +62,13 @@ class ForgotPasswordScreen extends StatelessWidget {
                             textInputType: TextInputType.emailAddress,
                             contentPadding: EdgeInsets.zero,
                             validators: (String? value) {
-                              if (value!.isNotEmpty) {
+                              if (value!.isEmpty) {
+                                  return 'required';
+                              }else if(!controller.emailValid(value)){
+                                return 'invalid email'.tr;
+                              }
+                              else{
                                 return null;
-                              } else {
-                                return 'required'.tr;
                               }
                             },
                           ),
@@ -81,8 +84,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                             txtColor: Colors.white,
                             onPress: () {
                               FocusScope.of(context).unfocus();
-                              if(controller.emailValid(_emailTextEditController.text.trim())){
                               if (_formKey.currentState!.validate()) {
+                              if(controller.emailValid(_emailTextEditController.text.trim())){
                                 Map<String, String> bodyParams = {
                                   'email': _emailTextEditController.text.trim(),
                                   'user_cat': "driver",
@@ -100,10 +103,11 @@ class ForgotPasswordScreen extends StatelessWidget {
                                   }
                                 });
                               }
+                               else{
+                                //ShowToastDialog.showToast("Enter valid email");
                               }
-                              else{
-                                ShowToastDialog.showToast("Enter valid email");
                               }
+                             
                             },
                           )),
                     ],

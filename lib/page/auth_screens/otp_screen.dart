@@ -159,10 +159,10 @@ class OtpScreen extends StatelessWidget {
                                 else {
                                     if (otpVerify == null) {
                                        Get.back();
-                                      ShowToastDialog.showToast("Something want wrong. Please try again later".tr);
+                                      ShowToastDialog.showToast("Something went wrong. Please try again later".tr);
                                     }
                                     //  else {
-                                    //   ShowToastDialog.showToast("Something want wrong. Please try again later".tr);
+                                    //   ShowToastDialog.showToast("Something went wrong. Please try again later".tr);
                                       
                                     // }
                                   }

@@ -60,10 +60,10 @@ class BookingConfirmation extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 const Center(
-                  child:  Text(
+                  child: Text(
                     "Your trip completed",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
+                    style: TextStyle(color: Color.fromARGB(255, 97, 97, 97)),
                   ),
                 ),
                 // RichText(
@@ -124,7 +124,7 @@ class BookingConfirmation extends StatelessWidget {
                     const Expanded(child: Text("Car Details: ")),
                     Expanded(
                       child: Text(
-                        "$carBrandname $carModelname",
+                        carModelname,
                         textAlign: TextAlign.right,
                       ),
                     ),
@@ -190,7 +190,7 @@ class BookingConfirmation extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 15,left: 15,right: 15,top: 15),
+        padding: const EdgeInsets.only(bottom: 15, left: 15, right: 15, top: 15),
         child: Row(
           children: [
             Expanded(

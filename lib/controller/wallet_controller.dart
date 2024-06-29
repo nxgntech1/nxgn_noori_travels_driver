@@ -80,8 +80,8 @@ class WalletController extends GetxController {
       } else {
         isLoading.value = false;
         paymentMethodList.clear();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -118,8 +118,8 @@ class WalletController extends GetxController {
   //       ShowToastDialog.showToast(responseBody['error'].toString());
   //     } else {
   //       ShowToastDialog.closeLoader();
-  //       ShowToastDialog.showToast('Something want wrong. Please try again later');
-  //       throw Exception('Failed to load album');
+  //       ShowToastDialog.showToast('Something went wrong. Please try again later');
+  //       // throw Exception('Failed to load album');
   //     }
   //   } on TimeoutException catch (e) {
   //     ShowToastDialog.closeLoader();
@@ -156,8 +156,8 @@ class WalletController extends GetxController {
         isLoading.value = false;
       } else {
         isLoading.value = false;
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       isLoading.value = false;
@@ -190,8 +190,8 @@ class WalletController extends GetxController {
         return null;
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -230,8 +230,8 @@ class WalletController extends GetxController {
         ShowToastDialog.closeLoader();
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -307,8 +307,8 @@ class WalletController extends GetxController {
         isLoading.value = false;
       } else {
         isLoading.value = false;
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       isLoading.value = false;

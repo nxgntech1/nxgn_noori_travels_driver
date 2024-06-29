@@ -36,12 +36,12 @@ class LocationPermissionDisclosureDialog extends StatelessWidget {
             style: TextStyle(color: Colors.green),
           ),
         ),
-        MaterialButton(
-          onPressed: () {
-            Get.back();
-          },
-          child: const Text('Decline', style: TextStyle(color: Colors.red)),
-        ),
+        // MaterialButton(
+        //   onPressed: () {
+        //     SystemNavigator.pop();
+        //   },
+        //   child: const Text('Decline', style: TextStyle(color: Colors.red)),
+        // ),
       ],
     );
   }

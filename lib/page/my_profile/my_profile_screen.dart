@@ -175,7 +175,7 @@ class MyProfileScreen extends StatelessWidget {
                                       "prenom": nameController.text,
                                       "user_cat": "driver",
                                     }).then((value) {
-                                      if (value == true) {
+                                      if (value != null) {
                                         if (value["success"] == "success") {
                                           UserModel userModel = Constant.getUserData();
                                           userModel.userData!.prenom = value['data']['prenom'];
@@ -186,9 +186,10 @@ class MyProfileScreen extends StatelessWidget {
                                           ShowToastDialog.showToast("Updated!!");
                                           Get.back();
                                         }
-                                      } else {
-                                        ShowToastDialog.showToast(value['error']);
-                                        Get.back();
+                                        else {
+                                          ShowToastDialog.showToast(value['error']);
+                                          Get.back();
+                                       }
                                       }
                                     });
                                   }

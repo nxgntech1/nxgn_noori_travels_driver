@@ -76,14 +76,15 @@ class PaymentController extends GetxController {
             if (parcelDetailsModel.rideDetailsdata!.taxModel![i].type == "Fixed") {
               taxAmount.value += double.parse(parcelDetailsModel.rideDetailsdata!.taxModel![i].value.toString());
             } else {
-              taxAmount.value += ((subTotalAmount.value - discountAmount.value) * double.parse(parcelDetailsModel.rideDetailsdata!.taxModel![i].value!.toString())) / 100;
+              taxAmount.value +=
+                  ((subTotalAmount.value - discountAmount.value) * double.parse(parcelDetailsModel.rideDetailsdata!.taxModel![i].value!.toString())) / 100;
             }
           }
         }
       } else if (response.statusCode == 200 && responseBody['success'] == "Failed") {
       } else {
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.showToast(e.message.toString());

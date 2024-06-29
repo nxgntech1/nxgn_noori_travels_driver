@@ -5,6 +5,7 @@ import 'package:cabme_driver/controller/phone_number_controller.dart';
 import 'package:cabme_driver/themes/button_them.dart';
 import 'package:cabme_driver/themes/constant_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -58,7 +59,66 @@ class MobileNumberScreen extends StatelessWidget {
                             //     ),
                             //     borderRadius: const BorderRadius.all(Radius.circular(6))),
                             padding: const EdgeInsets.only(left: 10),
-                            child: TextFieldThem.boxBuildTextField(
+                            child:
+                                // Column(
+                                //   crossAxisAlignment: CrossAxisAlignment.start,
+                                //   children: [
+                                // Text(
+                                //   "Phone Number",
+                                //   style: TextStyle(color: ConstantColors.titleTextColor, fontWeight: FontWeight.w600),
+                                // ),
+                                // const SizedBox(
+                                //   height: 5,
+                                // ),
+                                //     TextFormField(
+                                //         validator: (String? value) {
+                                //           if (value!.length == 10) {
+                                //             return null;
+                                //           } else {
+                                //             return 'Enter 10 digit mobile number'.tr;
+                                //           }
+                                //         },
+                                //         maxLength: 10,
+                                //         inputFormatters: <TextInputFormatter>[
+                                //           FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                //           FilteringTextInputFormatter.digitsOnly
+                                //         ],
+                                //         keyboardType: TextInputType.number,
+                                //         textCapitalization: TextCapitalization.sentences,
+                                //         controller: controller.passwordController,
+                                //         textInputAction: TextInputAction.done,
+                                //         style: TextStyle(color: ConstantColors.titleTextColor),
+                                //         decoration: InputDecoration(
+                                //             prefixIcon: const Padding(
+                                //               padding: EdgeInsets.fromLTRB(15, 15, 12, 8),
+                                //               child: Text("+91"),
+                                //             ),
+                                //             counterText: "",
+                                //             contentPadding: const EdgeInsets.all(8),
+                                //             fillColor: Colors.white,
+                                //             filled: true,
+                                //             focusedBorder: OutlineInputBorder(
+                                //               borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                //               borderSide: BorderSide(color: ConstantColors.textFieldBoarderColor, width: 0.7),
+                                //             ),
+                                //             enabledBorder: OutlineInputBorder(
+                                //               borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                //               borderSide: BorderSide(color: ConstantColors.textFieldBoarderColor, width: 0.7),
+                                //             ),
+                                //             errorBorder: OutlineInputBorder(
+                                //               borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                //               borderSide: BorderSide(color: ConstantColors.textFieldBoarderColor, width: 0.7),
+                                //             ),
+                                //             border: OutlineInputBorder(
+                                //               borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                //               borderSide: BorderSide(color: ConstantColors.textFieldBoarderColor, width: 0.7),
+                                //             ),
+                                //             hintText: "Phone Number",
+                                //             hintStyle: TextStyle(color: ConstantColors.hintTextColor))),
+                                //   ],
+                                // ),
+
+                                TextFieldThem.boxBuildTextFieldWithDigitsOnly(
                               hintText: 'Phone Number'.tr,
                               prefixIconOrImage: "+91",
                               controller: controller.passwordController,

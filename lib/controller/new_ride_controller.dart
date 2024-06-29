@@ -28,6 +28,8 @@ class NewRideController extends GetxController {
   RxString distanceFromDriverToUser = "".obs;
 
   Timer? timer;
+  String collectCash = "";
+  String finalAmount = "";
 
   @override
   void onInit() {
@@ -51,13 +53,12 @@ class NewRideController extends GetxController {
   final Location currentLocation = Location();
 
   getCurrentLocation() async {
-   // LocationData location = await currentLocation.getLocation();
-   ShowToastDialog.showLoader("Please wait");
-final locationData = await Geolocator.getCurrentPosition();
+    // LocationData location = await currentLocation.getLocation();
+    ShowToastDialog.showLoader("Please wait");
+    final locationData = await Geolocator.getCurrentPosition();
     driverLatitude.value = locationData.latitude;
     driverLongitude.value = locationData.longitude;
- ShowToastDialog.closeLoader();
-
+    ShowToastDialog.closeLoader();
   }
 
   Future<String?> getDistanceFromDrivertoUser(userLat, userLong) async {
@@ -161,8 +162,8 @@ final locationData = await Geolocator.getCurrentPosition();
         return responseBody;
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -194,8 +195,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -225,8 +226,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -256,8 +257,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -290,8 +291,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -326,8 +327,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error'].toString());
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -383,8 +384,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         // ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       // ShowToastDialog.closeLoader();
@@ -415,8 +416,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -450,8 +451,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -485,8 +486,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -509,6 +510,8 @@ final locationData = await Geolocator.getCurrentPosition();
       Map<String, dynamic> responseBody = json.decode(response.body);
       log(responseBody.toString());
       if (response.statusCode == 200 && responseBody['success'] == "success") {
+        collectCash = responseBody['collect_Cash'];
+        finalAmount = responseBody['finalAmount'];
         await getNewRide();
         ShowToastDialog.closeLoader();
         return 1;
@@ -517,8 +520,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();
@@ -549,8 +552,8 @@ final locationData = await Geolocator.getCurrentPosition();
         ShowToastDialog.showToast(responseBody['error']);
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();

@@ -43,8 +43,8 @@ class DocumentStatusController extends GetxController {
         isLoading.value = false;
       } else {
         isLoading.value = false;
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       isLoading.value = false;
@@ -87,8 +87,8 @@ class DocumentStatusController extends GetxController {
         return true;
       } else {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast('Something want wrong. Please try again later');
-        throw Exception('Failed to load album');
+        ShowToastDialog.showToast('Something went wrong. Please try again later');
+        // throw Exception('Failed to load album');
       }
     } on TimeoutException catch (e) {
       ShowToastDialog.closeLoader();

@@ -119,7 +119,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
             String googleUrl = "";
             await controller.getCurrentLocation();
             if (data.statut == "Start Trip") {
-               googleUrl =
+              googleUrl =
                   'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}';
               //    Constant.redirectMap(
               //   latitude: double.parse(data.latitudeDepart!), //orderModel.destinationLocationLAtLng!.latitude!,
@@ -127,7 +127,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
               //   name: data.departName!,
               // ); //orderModel.destinationLocationName.toString());
             } else {
-               googleUrl =
+              googleUrl =
                   'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
               //   Constant.redirectMap(
               //   latitude: double.parse(data.latitudeArrivee!), //orderModel.destinationLocationLAtLng!.latitude!,
@@ -137,7 +137,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
             }
 
             //'https://www.google.com/maps/dir/?api=1&origin=17.4365738,78.3670849&destination=17.2402684,78.4268102';
-            if (googleUrl !=await canLaunch(googleUrl)) {
+            if (googleUrl != await canLaunch(googleUrl)) {
               await launch(
                 googleUrl,
                 // forceWebView: true,
@@ -166,26 +166,28 @@ class _NewRideScreenState extends State<NewRideScreen> {
                   children: [
                     Row(
                       children: [
-                        (data.vehicleImage!= null && data.vehicleImage != "null")?ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CachedNetworkImage(
-                            // imageUrl: controller.data.value.vehicleImageid.toString(),
-                            imageUrl: data.vehicleImage.toString(),
-                            height: 50,
-                            width: 50,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Constant.loader(),
-                            errorWidget: (context, url, error) => Image.asset(
-                              height: 50,
-                            width: 50,
-                              "assets/images/appIcon.png",
-                            ),
-                          ),
-                        ):Image.asset(
-                          height: 50,
-                            width: 50,
-                              "assets/images/appIcon.png",
-                            ),
+                        (data.vehicleImage != null && data.vehicleImage != "null")
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: CachedNetworkImage(
+                                  // imageUrl: controller.data.value.vehicleImageid.toString(),
+                                  imageUrl: data.vehicleImage.toString(),
+                                  height: 50,
+                                  width: 50,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Constant.loader(),
+                                  errorWidget: (context, url, error) => Image.asset(
+                                    height: 50,
+                                    width: 50,
+                                    "assets/images/appIcon.png",
+                                  ),
+                                ),
+                              )
+                            : Image.asset(
+                                height: 50,
+                                width: 50,
+                                "assets/images/appIcon.png",
+                              ),
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0),
@@ -427,23 +429,25 @@ class _NewRideScreenState extends State<NewRideScreen> {
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Row(
                         children: [
-                         (data.photoPath!= null && data.photoPath!= "null")?ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              imageUrl: data.photoPath.toString(),
-                              height: 80,
-                              width: 80,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) => Image.asset(
-                                "assets/images/appIcon.png",
-                              ),
-                            ),
-                          ):Image.asset(
-                          height: 50,
-                            width: 50,
-                              "assets/images/appIcon.png",
-                            ),
+                          (data.photoPath != null && data.photoPath != "null")
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: data.photoPath.toString(),
+                                    height: 80,
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) => Image.asset(
+                                      "assets/images/appIcon.png",
+                                    ),
+                                  ),
+                                )
+                              : Image.asset(
+                                  height: 50,
+                                  width: 50,
+                                  "assets/images/appIcon.png",
+                                ),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
@@ -680,7 +684,6 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                   btnColor: ConstantColors.primary,
                                   txtColor: Colors.white,
                                   onPress: () async {
-                                    
                                     await buildOTPBottomSheet(context, controller, data);
 
                                     /*URL : https://nadmin.nxgnapp.com/api/v1/changestatus-arrived
@@ -1311,7 +1314,7 @@ buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller
                     "Enter odometer reading to start the trip".tr,
                     style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(0.60)),
                   ),
-                  TextFieldThem.boxBuildTextField(
+                  TextFieldThem.boxBuildTextFieldWithDigitsOnly(
                     hintText: ''.tr,
                     controller: controller.odoStartController,
                     textInputType: TextInputType.number,
@@ -1405,7 +1408,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                     "Enter odometer reading to end the trip".tr,
                     style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(0.60)),
                   ),
-                  TextFieldThem.boxBuildTextField(
+                  TextFieldThem.boxBuildTextFieldWithDigitsOnly(
                     hintText: ''.tr,
                     controller: controller.odoEndController,
                     textInputType: TextInputType.number,
@@ -1431,7 +1434,8 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                     btnColor: ConstantColors.primary,
                     txtColor: Colors.white,
                     onPress: () async {
-                      if (controller.odoEndController.text.isNotEmpty) {
+                      if (controller.odoEndController.text.isNotEmpty &&
+                          (int.parse(controller.odoEndController.text) > int.parse(controller.odoStartController.text))) {
                         await controller.getCurrentLocation();
                         Map<String, String> bodyParams = {
                           "id_ride": data.id.toString(),
@@ -1443,7 +1447,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                         dynamic responceflag = await controller.changestatusCompleted(bodyParams);
                         if (responceflag == 1) {
                           Get.back();
-                          if (data.payment == "Cash") {
+                          if (controller.collectCash == "1") {
                             controller.rideStatus.value = "completed";
                             await buildCashCollectBottomSheet(context, controller, data);
                             // showDialog(
@@ -1485,7 +1489,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                               "depart_name": data.departName.toString(),
                               "destination_name": data.destinationName.toString(),
                               "booking_type": data.bookingtype.toString(),
-                              "finalAmount": data.montant.toString(),
+                              "finalAmount": controller.finalAmount,
                               "coupon_id": "".toString(),
                               "duration": data.duree.toString(),
                               "distance": data.distance.toString(),
@@ -1494,12 +1498,16 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                               "ride_date": data.ride_required_on_date.toString(),
                               "ride_time": data.duree.toString(),
                               "bookfor_others_mobileno": data.bookOherMobileNumber.toString(),
-                              "bookfor_others_name":"${(data.bookOtherName != "")?data.bookOtherName:data.consumer_name}",
+                              "bookfor_others_name": "${(data.bookOtherName != "") ? data.bookOtherName : data.consumer_name}",
                             },
                           );
                         }
                       } else {
-                        ShowToastDialog.showToast("please enter odometer reading", position: EasyLoadingToastPosition.bottom);
+                        if (int.parse(controller.odoEndController.text) < int.parse(controller.odoStartController.text)) {
+                          ShowToastDialog.showToast("please enter odometer reading accurate", position: EasyLoadingToastPosition.bottom);
+                        } else {
+                          ShowToastDialog.showToast("please enter odometer reading", position: EasyLoadingToastPosition.bottom);
+                        }
                       }
                     },
                   ),
@@ -1511,7 +1519,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
       });
 }
 
-buildCashCollectBottomSheet(BuildContext context, NewRideController controller,RideData data) {
+buildCashCollectBottomSheet(BuildContext context, NewRideController controller, RideData data) {
   return showModalBottomSheet(
       isDismissible: false,
       context: context,
@@ -1534,14 +1542,14 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller,R
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "₹${(double.parse(data.montant!)).round().toString()}",
+                        controller.finalAmount,
                         style: const TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Text(
-                        "${(data.bookOtherName != "")?data.bookOtherName:data.consumer_name} to pay in cash",
+                        "${(data.bookOtherName != "") ? data.bookOtherName : data.consumer_name} to pay in cash",
                         style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w500),
                       ),
                     ],

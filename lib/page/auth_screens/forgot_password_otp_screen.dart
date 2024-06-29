@@ -169,7 +169,7 @@ class ForgotPasswordOtpScreen extends StatelessWidget {
                                   }
                                 }
                                 else{
-                                      ShowToastDialog.showToast("Something want wrong. Please try again later".tr);
+                                      ShowToastDialog.showToast("Something went wrong. Please try again later".tr);
                                 
                                 }
                               },

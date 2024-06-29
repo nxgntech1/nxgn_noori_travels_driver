@@ -82,10 +82,13 @@ class LoginScreen extends StatelessWidget {
                                   textInputType: TextInputType.emailAddress,
                                   contentPadding: EdgeInsets.zero,
                                   validators: (String? value) {
-                                    if (value!.isNotEmpty) {
+                                    if (value!.isEmpty) {
+                                      return 'required';
+                                    }else if(!controller.emailValid(value)){
+                                      return 'invalid email'.tr;
+                                    }
+                                    else{
                                       return null;
-                                    } else {
-                                      return 'required'.tr;
                                     }
                                   },
                                 ),
@@ -115,9 +118,9 @@ class LoginScreen extends StatelessWidget {
                                       btnColor: ConstantColors.primary,
                                       txtColor: Colors.white,
                                       onPress: () async {
+                                        if (_formKey.currentState!.validate()) {
                                         FocusScope.of(context).unfocus();
                                         if(controller.emailValid(_emailController.text.trim())){
-                                        if (_formKey.currentState!.validate()) {
                                           Map<String, String> bodyParams = {
                                             'email': _emailController.text.trim(),
                                             'mdp': _passwordController.text,
@@ -171,10 +174,11 @@ class LoginScreen extends StatelessWidget {
                                             }
                                           });
                                         }
-                                        }
                                         else{
-                                         ShowToastDialog.showToast("Enter valid email");
+                                         //ShowToastDialog.showToast("Enter valid email");
                                         }
+                                        }
+                                        
                                       },
                                     )),
                                 GestureDetector(
@@ -266,7 +270,7 @@ class LoginScreen extends StatelessWidget {
   showDialogPermission(BuildContext context) {
     showDialog(
       context: context,
-       barrierDismissible: false,
+      barrierDismissible: false,
       builder: (context) => const LocationPermissionDisclosureDialog(),
     );
   }
