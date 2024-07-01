@@ -111,41 +111,6 @@ class _NewRideScreenState extends State<NewRideScreen> {
           if (isDone != null) {
             controller.getNewRide();
           }
-        } else {
-          var argumentData = {'type': data.statut, 'data': data};
-          if (Constant.mapType == "inappmap//") {
-            Get.to(const RouteViewScreen(), arguments: argumentData);
-          } else {
-            String googleUrl = "";
-            await controller.getCurrentLocation();
-            if (data.statut == "Start Trip") {
-              googleUrl =
-                  'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}';
-              //    Constant.redirectMap(
-              //   latitude: double.parse(data.latitudeDepart!), //orderModel.destinationLocationLAtLng!.latitude!,
-              //   longLatitude: double.parse(data.longitudeDepart!), //orderModel.destinationLocationLAtLng!.longitude!,
-              //   name: data.departName!,
-              // ); //orderModel.destinationLocationName.toString());
-            } else {
-              googleUrl =
-                  'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
-              //   Constant.redirectMap(
-              //   latitude: double.parse(data.latitudeArrivee!), //orderModel.destinationLocationLAtLng!.latitude!,
-              //   longLatitude: double.parse(data.longitudeArrivee!), //orderModel.destinationLocationLAtLng!.longitude!,
-              //   name: data.destinationName!,
-              // ); //orderModel.destinationLocationName.toString());
-            }
-
-            //'https://www.google.com/maps/dir/?api=1&origin=17.4365738,78.3670849&destination=17.2402684,78.4268102';
-            if (googleUrl != await canLaunch(googleUrl)) {
-              await launch(
-                googleUrl,
-                // forceWebView: true,
-                // enableJavaScript: true,
-                // enableDomStorage: true,
-              );
-            }
-          }
         }
       },
       child: Stack(
@@ -405,8 +370,8 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(top: 8.0),
-                                          child:
-                                              Text("${data.duree}", style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
+                                          child: Text(data.duree!.replaceAll('hours', 'hrs').toString(),
+                                              style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
                                         ),
                                         // Padding(
                                         //   padding: const EdgeInsets.only(top: 8.0),
@@ -425,6 +390,110 @@ class _NewRideScreenState extends State<NewRideScreen> {
                         ),
                       ),
                     ),
+                    if (data.statut != "Completed")
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      var isDone = await Get.to(const TripHistoryScreen(), arguments: {
+                                        "rideData": data,
+                                      });
+                                      if (isDone != null) {
+                                        controller.getNewRide();
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black12,
+                                          ),
+                                          borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 13),
+                                        child: Column(
+                                          children: [
+                                            Icon(Icons.remove_red_eye_outlined, color: ConstantColors.primary),
+                                            // Text(
+                                            //   Constant.currency.toString(),
+                                            //   style: TextStyle(
+                                            //     color: ConstantColors.yellow,
+                                            //     fontWeight: FontWeight.bold,
+                                            //     fontSize: 20,
+                                            //   ),
+                                            // ),
+                                            const Text("View Details", style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      var argumentData = {'type': data.statut, 'data': data};
+                                      if (Constant.mapType == "inappmap//") {
+                                        Get.to(const RouteViewScreen(), arguments: argumentData);
+                                      } else {
+                                        String googleUrl = "";
+                                        await controller.getCurrentLocation();
+                                        if (data.statut == "Start Trip") {
+                                          googleUrl =
+                                              'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}';
+                                        } else {
+                                          googleUrl =
+                                              'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
+                                        }
+                                        if (googleUrl != await canLaunch(googleUrl)) {
+                                          await launch(
+                                            googleUrl,
+                                          );
+                                        }
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.black12,
+                                          ),
+                                          borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/icons/ic_distance.png',
+                                              height: 22,
+                                              width: 22,
+                                              color: ConstantColors.yellow,
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 8.0),
+                                              child: Text("Get Directions", style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
                     Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Row(

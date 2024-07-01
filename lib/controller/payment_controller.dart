@@ -46,7 +46,7 @@ class PaymentController extends GetxController {
       //   }
       // }
     }
-    if (data.value.statutPaiement == "yes") {
+    if (data.value.statutPaiement != "yes") {
       getRideDetailsData(data.value.id.toString());
       adminCommission.value = double.parse(data.value.adminCommission.toString());
     } else {

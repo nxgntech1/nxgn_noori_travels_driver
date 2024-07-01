@@ -128,4 +128,6 @@ class API {
   static const changestatusOnride = "${baseUrl}changestatus-onride";
   static const changestatusCompleted = "${baseUrl}changestatus-completed";
   static const cashCollected = "${baseUrl}cash-paid-request";
+
+  static const getUserRidesDetails = "${baseUrl}get-user-rides-details";
 }
