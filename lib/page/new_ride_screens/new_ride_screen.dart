@@ -1558,7 +1558,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                               "depart_name": data.departName.toString(),
                               "destination_name": data.destinationName.toString(),
                               "booking_type": data.bookingtype.toString(),
-                              "finalAmount": controller.finalAmount,
+                              "finalAmount": "₹${data.montant}",
                               "coupon_id": "".toString(),
                               "duration": data.duree.toString(),
                               "distance": data.distance.toString(),
@@ -1573,9 +1573,9 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                         }
                       } else {
                         if (int.parse(controller.odoEndController.text) < int.parse(controller.odoStartController.text)) {
-                          ShowToastDialog.showToast("please enter odometer reading accurate", position: EasyLoadingToastPosition.bottom);
+                          ShowToastDialog.showToast("please enter odometer reading accurate");
                         } else {
-                          ShowToastDialog.showToast("please enter odometer reading", position: EasyLoadingToastPosition.bottom);
+                          ShowToastDialog.showToast("please enter odometer reading");
                         }
                       }
                     },
