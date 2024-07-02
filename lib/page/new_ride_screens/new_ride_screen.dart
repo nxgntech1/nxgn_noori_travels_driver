@@ -12,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pinput/pinput.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../themes/responsive.dart';
@@ -85,7 +86,9 @@ class _NewRideScreenState extends State<NewRideScreen> {
                       child: controller.isLoading.value
                           ? Constant.loader()
                           : controller.rideList.isEmpty
-                              ? Constant.emptyView("Your don't have any ride booked.".tr)
+                              ? SingleChildScrollView(
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  child: SizedBox(height: Get.height, child: Constant.emptyView("Your don't have any ride booked.".tr)))
                               : ListView.builder(
                                   itemCount: controller.rideList.length,
                                   shrinkWrap: true,
@@ -221,7 +224,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                     ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: data.stops!.length,
+                        itemCount: data.stops ?? [].length,
                         itemBuilder: (context, int index) {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -285,7 +288,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -392,105 +395,102 @@ class _NewRideScreenState extends State<NewRideScreen> {
                     ),
                     if (data.statut != "Completed")
                       Padding(
-                        padding: const EdgeInsets.only(top: 0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      var isDone = await Get.to(const TripHistoryScreen(), arguments: {
-                                        "rideData": data,
-                                      });
-                                      if (isDone != null) {
-                                        controller.getNewRide();
-                                      }
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black12,
-                                          ),
-                                          borderRadius: const BorderRadius.all(Radius.circular(10))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 13),
-                                        child: Column(
-                                          children: [
-                                            Icon(Icons.remove_red_eye_outlined, color: ConstantColors.primary),
-                                            // Text(
-                                            //   Constant.currency.toString(),
-                                            //   style: TextStyle(
-                                            //     color: ConstantColors.yellow,
-                                            //     fontWeight: FontWeight.bold,
-                                            //     fontSize: 20,
-                                            //   ),
-                                            // ),
-                                            const Text("View Details", style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
-                                          ],
+                        padding: const EdgeInsets.only(left: 6.0, right: 6.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: InkWell(
+                                  onTap: () async {
+                                    var isDone = await Get.to(const TripHistoryScreen(), arguments: {
+                                      "rideData": data,
+                                    });
+                                    if (isDone != null) {
+                                      controller.getNewRide();
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black12,
                                         ),
+                                        borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 13),
+                                      child: Column(
+                                        children: [
+                                          Icon(Icons.remove_red_eye_outlined, color: ConstantColors.primary),
+                                          // Text(
+                                          //   Constant.currency.toString(),
+                                          //   style: TextStyle(
+                                          //     color: ConstantColors.yellow,
+                                          //     fontWeight: FontWeight.bold,
+                                          //     fontSize: 20,
+                                          //   ),
+                                          // ),
+                                          const Text("View Details", style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      var argumentData = {'type': data.statut, 'data': data};
-                                      if (Constant.mapType == "inappmap//") {
-                                        Get.to(const RouteViewScreen(), arguments: argumentData);
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: InkWell(
+                                  onTap: () async {
+                                    var argumentData = {'type': data.statut, 'data': data};
+                                    if (Constant.mapType == "inappmap//") {
+                                      Get.to(const RouteViewScreen(), arguments: argumentData);
+                                    } else {
+                                      String googleUrl = "";
+                                      await controller.getCurrentLocation();
+                                      if (data.statut == "Start Trip") {
+                                        googleUrl =
+                                            'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}';
                                       } else {
-                                        String googleUrl = "";
-                                        await controller.getCurrentLocation();
-                                        if (data.statut == "Start Trip") {
-                                          googleUrl =
-                                              'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}';
-                                        } else {
-                                          googleUrl =
-                                              'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
-                                        }
-                                        if (googleUrl != await canLaunch(googleUrl)) {
-                                          await launch(
-                                            googleUrl,
-                                          );
-                                        }
+                                        googleUrl =
+                                            'https://www.google.com/maps/dir/?api=1&origin=${double.parse(controller.driverLatitude.toString())},${double.parse(controller.driverLongitude.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
                                       }
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black12,
-                                          ),
-                                          borderRadius: const BorderRadius.all(Radius.circular(10))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                        child: Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/icons/ic_distance.png',
-                                              height: 22,
-                                              width: 22,
-                                              color: ConstantColors.yellow,
-                                            ),
-                                            const Padding(
-                                              padding: EdgeInsets.only(top: 8.0),
-                                              child: Text("Get Directions", style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
-                                            ),
-                                          ],
+                                      if (googleUrl != await canLaunch(googleUrl)) {
+                                        await launch(
+                                          googleUrl,
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.black12,
                                         ),
+                                        borderRadius: const BorderRadius.all(Radius.circular(10))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 10),
+                                      child: Column(
+                                        children: [
+                                          Image.asset(
+                                            'assets/icons/ic_distance.png',
+                                            height: 22,
+                                            width: 22,
+                                            color: ConstantColors.yellow,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.only(top: 8.0),
+                                            child: Text("Get Directions", style: TextStyle(fontWeight: FontWeight.w800, color: Colors.black54, fontSize: 11)),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
 
@@ -534,7 +534,9 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                         Text('${data.prenom.toString()} ${data.nom.toString()}',
                                             style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                                         const SizedBox(height: 10),
-                                        Text(data.creer.toString(), style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                        Text(
+                                            "${DateFormat("dd MMM yyyy").format(DateFormat("dd MMM, yyyy hh:mm a").parse(data.rideRequiredOnDate!)).toString()}, ${data.rideRequiredOnTime}",
+                                            style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
                                         // StarRating(size: 18, rating: double.parse(data.moyenneDriver.toString()), color: ConstantColors.yellow),
                                       ],
                                     ),
@@ -543,24 +545,28 @@ class _NewRideScreenState extends State<NewRideScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (data.rideType! == 'driver' && data.existingUserId.toString() == "null") {
-                                    Constant.makePhoneCall(data.userInfo!.phone.toString());
-                                  } else {
-                                    Constant.makePhoneCall(data.phone.toString());
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.blue,
-                                  shape: const CircleBorder(),
-                                  backgroundColor: Colors.blue,
-                                  padding: const EdgeInsets.all(6), // <-- Splash color
-                                ),
-                                child: const Icon(
-                                  Icons.call,
-                                  color: Colors.white,
-                                  size: 18,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: InkWell(
+                                  onTap: () {
+                                    if (data.rideType! == 'driver' && data.existingUserId.toString() == "null") {
+                                      Constant.makePhoneCall(data.userInfo!.phone.toString());
+                                    } else {
+                                      Constant.makePhoneCall(data.phone.toString());
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5.0), // Adjust the padding as needed
+                                    decoration: const BoxDecoration(
+                                      // color: ConstantColors.primary, // Background color
+                                      shape: BoxShape.circle, // Makes the container circular
+                                    ),
+                                    child: Icon(
+                                      Icons.call,
+                                      color: ConstantColors.primary, // Icon color
+                                      size: 24.0, // Icon size
+                                    ),
+                                  ),
                                 ),
                               ),
                               // Text(data.dateRetour.toString(), style: const TextStyle(color: Colors.black26, fontWeight: FontWeight.w600)),
@@ -634,33 +640,13 @@ class _NewRideScreenState extends State<NewRideScreen> {
                       child: Row(
                         children: [
                           Visibility(
-                            visible: data.payment == "Cash" ? true : false,
+                            visible: true,
                             child: Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 5),
                                 child: ButtonThem.buildBorderButton(
                                   context,
-                                  title: 'Cash'.tr,
-                                  btnHeight: 45,
-                                  btnWidthRatio: 0.8,
-                                  btnColor: Colors.white,
-                                  txtColor: Colors.black.withOpacity(0.60),
-                                  btnBorderColor: Colors.black.withOpacity(0.20),
-                                  onPress: () async {
-                                    // buildShowBottomSheet(context, data, controller);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: data.payment != "Cash" ? true : false,
-                            child: Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                child: ButtonThem.buildBorderButton(
-                                  context,
-                                  title: 'Paid'.tr,
+                                  title: data.payment!,
                                   btnHeight: 45,
                                   btnWidthRatio: 0.8,
                                   btnColor: Colors.white,
@@ -731,7 +717,9 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                   onPress: () async {
                                     // var sLat = data.latitudeDepart;
                                     // var sLong = data.longitudeDepart;
-                                    buildOdoMeterStartBottomSheet(context, controller, data);
+                                    if (true) {
+                                      buildOdoMeterStartBottomSheet(context, controller, data);
+                                    }
                                     /* URL : https://nadmin.nxgnapp.com/api/v1/changestatus-starttrip
                                       {"id_ride":"171","id_user":"1","driver_lat":"17.35345345","driver_lon":"78.23423423","distance_to_pickup":"25"}
                                       Note: navigate to google maps from driver location to departure location */
@@ -1357,7 +1345,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
   }
 }
 
-buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller, data) {
+buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller, RideData data) {
   controller.odoStartController = TextEditingController();
   return showModalBottomSheet(
       //isDismissible: false,
@@ -1439,7 +1427,7 @@ buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller
                           }
                         }
                       } else {
-                        ShowToastDialog.showToast("please enter odometer reading", position: EasyLoadingToastPosition.bottom);
+                        ShowToastDialog.showToast("please enter odometer reading");
                       }
                     },
                   ),
@@ -1504,7 +1492,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                     txtColor: Colors.white,
                     onPress: () async {
                       if (controller.odoEndController.text.isNotEmpty &&
-                          (int.parse(controller.odoEndController.text) > int.parse(controller.odoStartController.text))) {
+                          (int.parse(data.odometerStartReading!) > int.parse(controller.odoStartController.text))) {
                         await controller.getCurrentLocation();
                         Map<String, String> bodyParams = {
                           "id_ride": data.id.toString(),
@@ -1564,10 +1552,10 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                               "distance": data.distance.toString(),
                               "distance_unit": Constant.distanceUnit.toString(),
                               "id_payment_method": data.payment.toString(),
-                              "ride_date": data.ride_required_on_date.toString(),
+                              "ride_date": data.rideRequiredOnDate.toString(),
                               "ride_time": data.duree.toString(),
-                              "bookfor_others_mobileno": data.bookOherMobileNumber.toString(),
-                              "bookfor_others_name": "${(data.bookOtherName != "") ? data.bookOtherName : data.consumer_name}",
+                              "bookfor_others_mobileno": data.bookforOthersMobileno.toString(),
+                              "bookfor_others_name": "${(data.bookforOthersName != "") ? data.bookforOthersName : data.consumerName}",
                             },
                           );
                         }
@@ -1618,7 +1606,7 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller, 
                         height: 20,
                       ),
                       Text(
-                        "${(data.bookOtherName != "") ? data.bookOtherName : data.consumer_name} to pay in cash",
+                        "${(data.bookforOthersName != "") ? data.bookforOthersName : data.consumerName} to pay in cash",
                         style: const TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w500),
                       ),
                     ],
@@ -1747,7 +1735,7 @@ buildOTPBottomSheet(BuildContext context, NewRideController controller, data) {
                             ShowToastDialog.showToast("please enter valid otp");
                           }
                         } else {
-                          ShowToastDialog.showToast("please enter otp", position: EasyLoadingToastPosition.bottom);
+                          ShowToastDialog.showToast("please enter otp");
                         }
                         Get.back();
                       },
@@ -1759,4 +1747,14 @@ buildOTPBottomSheet(BuildContext context, NewRideController controller, data) {
           }),
         );
       });
+}
+
+bool dateCheckwithCurrentTime(date) {
+  String dateTimeString = "28 Jun, 2024 09:07 AM";
+  DateTime dateTime = DateFormat("dd MMM, yyyy hh:mm a").parse(dateTimeString);
+  DateTime currentTime = DateTime.now();
+  Duration difference = currentTime.difference(dateTime);
+
+  bool isLessThanFiveHours = difference.inHours.abs() < 5;
+  return isLessThanFiveHours;
 }

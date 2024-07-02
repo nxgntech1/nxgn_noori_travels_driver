@@ -20,6 +20,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'page/completed/trip_history_screen.dart';
 import 'service/localization_service.dart';
 import 'themes/constant_colors.dart';
 import 'utils/Preferences.dart';
@@ -90,25 +91,38 @@ class MyApp extends StatelessWidget {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      if (message.notification != null) {
-        if (message.data['status'] == "done") {
-          // await Get.to(ConversationScreen(), arguments: {
-          //   'receiverId': int.parse(json.decode(message.data['message'])['senderId'].toString()),
-          //   'orderId': int.parse(json.decode(message.data['message'])['orderId'].toString()),
-          //   'receiverName': json.decode(message.data['message'])['senderName'].toString(),
-          //   'receiverPhoto': json.decode(message.data['message'])['senderPhoto'].toString(),
-          // });
-        } else if (message.data['statut'] == "new" && message.data['statut'] == "rejected") {
-          await Get.to(DashBoard());
-        } else if (message.data['type'] == "payment received") {
-          DashBoardController dashBoardController = Get.put(DashBoardController());
-          dashBoardController.selectedDrawerIndex.value = 4;
+      // if (message.notification != null) {
+      //   if (message.data['status'] == "done") {
+      //     // await Get.to(ConversationScreen(), arguments: {
+      //     //   'receiverId': int.parse(json.decode(message.data['message'])['senderId'].toString()),
+      //     //   'orderId': int.parse(json.decode(message.data['message'])['orderId'].toString()),
+      //     //   'receiverName': json.decode(message.data['message'])['senderName'].toString(),
+      //     //   'receiverPhoto': json.decode(message.data['message'])['senderPhoto'].toString(),
+      //     // });
+      //   } else if (message.data['statut'] == "new") {
+      //     await Get.to(DashBoard());
+      //   } else if (message.data['type'] == "payment received") {
+      //     DashBoardController dashBoardController = Get.put(DashBoardController());
+      //     dashBoardController.selectedDrawerIndex.value = 4;
+      //     await Get.to(DashBoard());
+      //   } else {
+      //     await Get.to(DashBoard());
+      //   }
+      // } else {
+      if (message.data['ride_id'] != null) {
+        var rideId = message.data['ride_id'];
+
+        var isDone = await Get.to(() => const TripHistoryScreen(), arguments: {
+          "rideId": rideId,
+        });
+
+        if (isDone != null) {
           await Get.to(DashBoard());
         }
-        else{
-          await Get.to(DashBoard());
-        }
+      } else {
+        await Get.to(DashBoard());
       }
+      // }
     });
     await FirebaseMessaging.instance.subscribeToTopic("nxgn_nooritravels_driver");
   }

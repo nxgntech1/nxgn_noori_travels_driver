@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../themes/Constants.dart';
+import '../../themes/button_them.dart';
 import '../../themes/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class TripHistoryScreen extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
                                         child: Text(
-                                            "${controller.singleRideDetails[0].bookigDate != null ? '${DateFormat('yyyy-MM-dd').format(DateTime.parse(controller.singleRideDetails[0].bookigDate.toString()))},' : ""}  ${controller.singleRideDetails[0].bookingTime != null ? controller.singleRideDetails[0].bookingTime.toString() : ""} ",
+                                            "${controller.singleRideDetails[0].bookigDate != null ? '${DateFormat('dd MMM yyyy').format(DateTime.parse(controller.singleRideDetails[0].bookigDate.toString()))},' : ""}  ${controller.singleRideDetails[0].bookingTime != null ? controller.singleRideDetails[0].bookingTime.toString() : ""} ",
                                             // "${controller.singleRideDetails[0].creer.toString()} | ${controller.formattedTime.value} ",
                                             style: const TextStyle(color: Colors.black45, fontWeight: FontWeight.w400)),
                                       ),
@@ -569,6 +570,27 @@ class TripHistoryScreen extends StatelessWidget {
                                                   Row(
                                                     children: [
                                                       Expanded(
+                                                          child: Text("Payment Mode",
+                                                              style: TextStyle(
+                                                                letterSpacing: 1.0,
+                                                                fontSize: 15,
+                                                                color: ConstantColors.subTitleTextColor,
+                                                              ))),
+                                                      Text(
+                                                        "${controller.singleRideDetails[0].addon?[i].paymentStatus}",
+                                                        style: TextStyle(
+                                                          letterSpacing: 1.0,
+                                                          fontSize: 15,
+                                                          color: ConstantColors.subTitleTextColor,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+
+                                                  const SizedBox(height: 10),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
                                                           child: Text(
                                                         "Package Fare",
                                                         style: TextStyle(
@@ -737,6 +759,33 @@ class TripHistoryScreen extends StatelessWidget {
                                     : const SizedBox(
                                         height: 0,
                                       ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    Visibility(
+                                      visible: true,
+                                      child: Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(bottom: 5),
+                                          child: ButtonThem.buildBorderButton(
+                                            context,
+                                            title: '${controller.singleRideDetails[0].payment}',
+                                            btnHeight: 45,
+                                            btnWidthRatio: 0.8,
+                                            btnColor: Colors.white,
+                                            txtColor: Colors.black.withOpacity(0.60),
+                                            btnBorderColor: Colors.black.withOpacity(0.20),
+                                            onPress: () async {
+                                              // buildShowBottomSheet(context, data, controller);
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -815,7 +864,7 @@ class TripHistoryScreen extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.fromLTRB(10, 4, 10, 4), // Add desired padding here
         decoration: BoxDecoration(
-          color: Colors.green, // Background color
+          color: Colors.red[400],
           borderRadius: BorderRadius.circular(4.0), // Optional: Rounded corners
         ),
         child: const Text(
@@ -830,7 +879,7 @@ class TripHistoryScreen extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.fromLTRB(10, 4, 10, 4), // Add desired padding here
         decoration: BoxDecoration(
-          color: Colors.green, // Background color
+          color: Colors.green[400], // Background color
           borderRadius: BorderRadius.circular(4.0), // Optional: Rounded corners
         ),
         child: const Text(

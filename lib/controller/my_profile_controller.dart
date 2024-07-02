@@ -8,7 +8,6 @@ import 'package:cabme_driver/service/api.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-
 class MyProfileController extends GetxController {
   var isLoading = true.obs;
 
@@ -33,7 +32,6 @@ class MyProfileController extends GetxController {
   RxString profileImage = "".obs;
   RxString userID = "".obs;
 
-
   getUsrData() async {
     UserModel userModel = Constant.getUserData();
     name.value = userModel.userData!.prenom!;
@@ -45,11 +43,6 @@ class MyProfileController extends GetxController {
     profileImage.value = userModel.userData!.photoPath ?? "";
     userID.value = userModel.userData!.id.toString();
   }
-
-
-
-
-
 
   Future<dynamic> uploadPhoto(File image) async {
     try {
@@ -69,7 +62,8 @@ class MyProfileController extends GetxController {
       Map<String, dynamic> response = jsonDecode(String.fromCharCodes(responseData));
       if (res.statusCode == 200) {
         ShowToastDialog.closeLoader();
-        ShowToastDialog.showToast("Uploaded!");
+        Get.back();
+        ShowToastDialog.showToast("Uploaded successfully");
         return response;
       } else {
         ShowToastDialog.closeLoader();
@@ -248,8 +242,6 @@ class MyProfileController extends GetxController {
     }
     return null;
   }
-
-
 
   Future<dynamic> deleteAccount(String userId) async {
     try {

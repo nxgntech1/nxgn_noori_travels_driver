@@ -1,101 +1,103 @@
-import 'package:cabme_driver/model/tax_model.dart';
+import 'dart:convert';
 
 class RideModel {
-  String? success;
-  String? error;
-  String? message;
-  List<RideData>? data;
+  final String? success;
+  final dynamic error;
+  final String? message;
+  final List<RideData>? data;
 
-  RideModel({this.success, this.error, this.message, this.data});
+  RideModel({
+    this.success,
+    this.error,
+    this.message,
+    this.data,
+  });
 
-  RideModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    error = json['error'];
-    message = json['message'];
-    if (json['data'] != null) {
-      data = <RideData>[];
-      json['data'].forEach((v) {
-        data!.add(RideData.fromJson(v));
-      });
-    }
-  }
+  factory RideModel.fromRawJson(String str) => RideModel.fromJson(json.decode(str));
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
-    data['error'] = error;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  String toRawJson() => json.encode(toJson());
+
+  factory RideModel.fromJson(Map<String, dynamic> json) => RideModel(
+        success: json["success"],
+        error: json["error"],
+        message: json["message"],
+        data: json["data"] == null ? [] : List<RideData>.from(json["data"]!.map((x) => RideData.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "error": error,
+        "message": message,
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+      };
 }
 
 class RideData {
-  String? id;
-  String? idUserApp;
-  String? distanceUnit;
-  String? departName;
-  String? destinationName;
-  String? latitudeDepart;
-  String? longitudeDepart;
-  String? latitudeArrivee;
-  String? longitudeArrivee;
-  String? numberPoeple;
-  String? place;
-  String? statut;
-  String? idConducteur;
-  String? creer;
-  String? trajet;
-  String? feelSafeDriver;
-  String? nom;
-  String? prenom;
-  List<Stops>? stops;
-  String? distance;
-  String? phone;
-  String? photoPath;
-  String? nomConducteur;
-  String? prenomConducteur;
-  String? driverPhone;
-  String? dateRetour;
-  String? heureRetour;
-  String? statutRound;
-  String? montant;
-  String? duree;
-  String? userId;
-  String? statutPaiement;
-  String? payment;
-  String? paymentImage;
-  String? tripObjective;
-  String? ageChildren1;
-  String? ageChildren2;
-  String? ageChildren3;
-  String? moyenne;
-  String? moyenneDriver;
-  String? idVehicule;
-  String? brand;
-  String? model;
-  String? carMake;
-  String? milage;
-  String? km;
-  String? color;
-  String? numberplate;
-  String? passenger;
-  String? discount;
-  String? tipAmount;
-  String? otp;
-  String? rideType;
-  String? existingUserId;
-  String? adminCommission;
-  String? vehicleImage;
-  UserInfo? userInfo;
-  List<TaxModel>? taxModel;
-  String? bookOtherName;
-  String? bookOherMobileNumber;
-  String? bookingtype;
-  String? ride_required_on_date;
-  String? consumer_name;
+  final String? id;
+  final String? idUserApp;
+  final String? distanceUnit;
+  final String? departName;
+  final String? destinationName;
+  final String? otp;
+  final String? latitudeDepart;
+  final String? longitudeDepart;
+  final String? latitudeArrivee;
+  final String? longitudeArrivee;
+  final String? numberPoeple;
+  final String? place;
+  late final String? statut;
+  final String? idConducteur;
+  final String? creer;
+  final String? trajet;
+  final String? feelSafeDriver;
+  final String? nom;
+  final String? prenom;
+  final int? existingUserId;
+  final String? distance;
+  final String? rideType;
+  final String? phone;
+  final String? photoPath;
+  final String? nomConducteur;
+  final String? prenomConducteur;
+  final String? driverPhone;
+  final String? dateRetour;
+  final String? heureRetour;
+  final String? statutRound;
+  final String? montant;
+  final String? duree;
+  final String? userId;
+  final String? statutPaiement;
+  final String? payment;
+  final String? paymentImage;
+  final String? tripObjective;
+  final String? ageChildren1;
+  final String? ageChildren2;
+  final String? ageChildren3;
+  final dynamic stops;
+  final dynamic tax;
+  final String? tipAmount;
+  final String? discount;
+  final String? adminCommission;
+  final dynamic userInfo;
+  final int? vehicleId;
+  final String? bookforOthersMobileno;
+  final String? bookforOthersName;
+  final String? bookingtype;
+  final String? rideRequiredOnDate;
+  final String? rideRequiredOnTime;
+  final String? odometerStartReading;
+  final String? odometerEndReading;
+  final String? consumerName;
+  final String? drivername;
+  final String? RideDataDriverPhone;
+  final String? moyenne;
+  final String? moyenneDriver;
+  final String? idVehicule;
+  final String? brand;
+  final String? model;
+  final String? color;
+  final String? numberplate;
+  final String? vehicleImage;
 
   RideData({
     this.id,
@@ -103,6 +105,7 @@ class RideData {
     this.distanceUnit,
     this.departName,
     this.destinationName,
+    this.otp,
     this.latitudeDepart,
     this.longitudeDepart,
     this.latitudeArrivee,
@@ -116,7 +119,9 @@ class RideData {
     this.feelSafeDriver,
     this.nom,
     this.prenom,
+    this.existingUserId,
     this.distance,
+    this.rideType,
     this.phone,
     this.photoPath,
     this.nomConducteur,
@@ -135,193 +140,172 @@ class RideData {
     this.ageChildren1,
     this.ageChildren2,
     this.ageChildren3,
+    this.stops,
+    this.tax,
+    this.tipAmount,
+    this.discount,
+    this.adminCommission,
+    this.userInfo,
+    this.vehicleId,
+    this.bookforOthersMobileno,
+    this.bookforOthersName,
+    this.bookingtype,
+    this.rideRequiredOnDate,
+    this.rideRequiredOnTime,
+    this.odometerStartReading,
+    this.odometerEndReading,
+    this.consumerName,
+    this.drivername,
+    this.RideDataDriverPhone,
     this.moyenne,
     this.moyenneDriver,
     this.idVehicule,
     this.brand,
     this.model,
-    this.carMake,
-    this.milage,
-    this.km,
     this.color,
     this.numberplate,
-    this.passenger,
-    this.discount,
-    this.tipAmount,
-    this.stops,
-    this.otp,
-    this.taxModel,
-    this.rideType,
-    this.userInfo,
-    this.existingUserId,
-    this.adminCommission,
     this.vehicleImage,
-    this.bookOherMobileNumber,
-    this.bookOtherName,
-    this.bookingtype,
-    this.ride_required_on_date,
-    this.consumer_name
   });
 
-  RideData.fromJson(Map<String, dynamic> json) {
-    List<TaxModel>? taxList = [];
-    if (json['tax'] != null) {
-      taxList = <TaxModel>[];
-      json['tax'].forEach((v) {
-        taxList!.add(TaxModel.fromJson(v));
-      });
-    }
-    id = json['id'].toString();
-    idUserApp = json['id_user_app'].toString();
-    distanceUnit = json['distance_unit'].toString();
-    departName = json['depart_name'].toString();
-    destinationName = json['destination_name'].toString();
-    latitudeDepart = json['latitude_depart'].toString();
-    longitudeDepart = json['longitude_depart'].toString();
-    latitudeArrivee = json['latitude_arrivee'].toString();
-    longitudeArrivee = json['longitude_arrivee'].toString();
-    numberPoeple = json['number_poeple'].toString();
-    place = json['place'].toString();
-    statut = json['statut'].toString();
-    if (json['stops'] != null && json['stops'] != []) {
-      stops = <Stops>[];
-      json['stops'].forEach((v) {
-        stops!.add(Stops.fromJson(v));
-      });
-    } else {
-      stops = [];
-    }
-    if (json['user_info'] != null) {
-      userInfo = UserInfo.fromJson(json['user_info']);
-    }
-    idConducteur = json['id_conducteur'].toString();
-    creer = json['creer'].toString();
-    trajet = json['trajet'].toString();
-    feelSafeDriver = json['feel_safe_driver'].toString();
-    nom = json['nom'].toString();
-    prenom = json['prenom'].toString();
-    distance = json['distance'].toString();
-    phone = json['phone'].toString();
-    photoPath = json['photo_path'].toString();
-    nomConducteur = json['nomConducteur'].toString();
-    prenomConducteur = json['prenomConducteur'].toString();
-    driverPhone = json['driverPhone'].toString();
-    dateRetour = json['date_retour'].toString();
-    heureRetour = json['heure_retour'].toString();
-    statutRound = json['statut_round'].toString();
-    montant = json['montant'].toString();
-    duree = json['duree'].toString();
-    userId = json['userId'].toString();
-    statutPaiement = json['statut_paiement'].toString();
-    payment = json['payment'].toString();
-    paymentImage = json['payment_image'].toString();
-    tripObjective = json['trip_objective'].toString();
-    ageChildren1 = json['age_children1'].toString();
-    ageChildren2 = json['age_children2'].toString();
-    ageChildren3 = json['age_children3'].toString();
-    driverPhone = json['driver_phone'].toString();
-    moyenne = json['moyenne'].toString();
-    moyenneDriver = json['moyenne_driver'].toString();
-    idVehicule = json['idVehicule'].toString();
-    brand = json['brand'].toString();
-    model = json['model'].toString();
-    carMake = json['car_make'].toString();
-    milage = json['milage'].toString();
-    km = json['km'].toString();
-    color = json['color'].toString();
-    numberplate = json['numberplate'].toString();
-    passenger = json['passenger'].toString();
-    discount = json['discount'].toString();
-    tipAmount = json['tip_amount'].toString();
-    otp = json['otp'].toString();
-    rideType = json['ride_type'].toString();
-    existingUserId = json['existing_user_id'].toString();
-    vehicleImage = json['vehicle_image'].toString();
-    adminCommission = json['admin_commission'].toString();
-    bookOherMobileNumber = json['bookfor_others_mobileno'].toString();
-    bookOtherName = json['bookfor_others_name'].toString();
-    bookingtype = json['bookingtype'].toString();
-    ride_required_on_date = json['ride_required_on_date'].toString();
-    consumer_name = json['consumer_name'].toString();
-    
-    
+  factory RideData.fromRawJson(String str) => RideData.fromJson(json.decode(str));
 
-    taxModel = taxList;
-  }
+  String toRawJson() => json.encode(toJson());
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['id_user_app'] = idUserApp;
-    data['distance_unit'] = distanceUnit;
-    data['depart_name'] = departName;
-    data['destination_name'] = destinationName;
-    data['latitude_depart'] = latitudeDepart;
-    data['longitude_depart'] = longitudeDepart;
-    data['latitude_arrivee'] = latitudeArrivee;
-    data['longitude_arrivee'] = longitudeArrivee;
-    data['number_poeple'] = numberPoeple;
-    data['place'] = place;
-    data['statut'] = statut;
-    data['id_conducteur'] = idConducteur;
-    data['creer'] = creer;
-    data['trajet'] = trajet;
-    data['feel_safe_driver'] = feelSafeDriver;
-    data['nom'] = nom;
-    data['prenom'] = prenom;
-    data['distance'] = distance;
-    data['phone'] = phone;
-    data['photo_path'] = photoPath;
-    data['nomConducteur'] = nomConducteur;
-    data['prenomConducteur'] = prenomConducteur;
-    data['driverPhone'] = driverPhone;
-    data['date_retour'] = dateRetour;
-    data['heure_retour'] = heureRetour;
-    data['statut_round'] = statutRound;
-    data['montant'] = montant;
-    data['duree'] = duree;
-    data['userId'] = userId;
-    data['statut_paiement'] = statutPaiement;
-    data['payment'] = payment;
-    data['payment_image'] = paymentImage;
-    data['trip_objective'] = tripObjective;
-    data['age_children1'] = ageChildren1;
-    data['age_children2'] = ageChildren2;
-    data['age_children3'] = ageChildren3;
-    data['driver_phone'] = driverPhone;
-    data['moyenne'] = moyenne;
-    data['moyenne_driver'] = moyenneDriver;
-    data['idVehicule'] = idVehicule;
-    data['brand'] = brand;
-    data['model'] = model;
-    data['car_make'] = carMake;
-    data['milage'] = milage;
-    data['km'] = km;
-    data['color'] = color;
-    data['numberplate'] = numberplate;
-    data['passenger'] = passenger;
-    data['discount'] = discount;
-    data['tip_amount'] = tipAmount;
-    data['otp'] = otp;
-    data['ride_type'] = rideType;
-    data['existing_user_id'] = existingUserId;
-    data['admin_commission'] = adminCommission;
-    data['vehicle_image'] = vehicleImage;
-    data['bookfor_others_mobileno'] = bookOherMobileNumber;
-    data['bookingtype'] = bookOtherName;
-    data['ride_required_on_date'] = ride_required_on_date;
-    data['consumer_name'] = consumer_name;
-    if (userInfo != null) {
-      data['user_info'] = userInfo!.toJson();
-    }
-    if (stops!.isNotEmpty) {
-      data['stops'] = stops!.map((v) => v.toJson()).toList();
-    } else {
-      data['stops'] = [];
-    }
-    data['tax'] = taxModel?.map((v) => v.toJson()).toList();
-    return data;
-  }
+  factory RideData.fromJson(Map<String, dynamic> json) => RideData(
+        id: json["id"],
+        idUserApp: json["id_user_app"],
+        distanceUnit: json["distance_unit"],
+        departName: json["depart_name"],
+        destinationName: json["destination_name"],
+        otp: json["otp"],
+        latitudeDepart: json["latitude_depart"],
+        longitudeDepart: json["longitude_depart"],
+        latitudeArrivee: json["latitude_arrivee"],
+        longitudeArrivee: json["longitude_arrivee"],
+        numberPoeple: json["number_poeple"],
+        place: json["place"],
+        statut: json["statut"],
+        idConducteur: json["id_conducteur"],
+        creer: json["creer"],
+        trajet: json["trajet"],
+        feelSafeDriver: json["feel_safe_driver"],
+        nom: json["nom"],
+        prenom: json["prenom"],
+        existingUserId: json["existing_user_id"],
+        distance: json["distance"],
+        rideType: json["ride_type"],
+        phone: json["phone"],
+        photoPath: json["photo_path"],
+        nomConducteur: json["nomConducteur"],
+        prenomConducteur: json["prenomConducteur"],
+        driverPhone: json["driverPhone"],
+        dateRetour: json["date_retour"],
+        heureRetour: json["heure_retour"],
+        statutRound: json["statut_round"],
+        montant: json["montant"],
+        duree: json["duree"],
+        userId: json["userId"],
+        statutPaiement: json["statut_paiement"],
+        payment: json["payment"],
+        paymentImage: json["payment_image"],
+        tripObjective: json["trip_objective"],
+        ageChildren1: json["age_children1"],
+        ageChildren2: json["age_children2"],
+        ageChildren3: json["age_children3"],
+        stops: json["stops"],
+        tax: json["tax"],
+        tipAmount: json["tip_amount"],
+        discount: json["discount"],
+        adminCommission: json["admin_commission"],
+        userInfo: json["user_info"],
+        vehicleId: json["vehicle_id"],
+        bookforOthersMobileno: json["bookfor_others_mobileno"],
+        bookforOthersName: json["bookfor_others_name"],
+        bookingtype: json["bookingtype"],
+        rideRequiredOnDate: json["ride_required_on_date"],
+        rideRequiredOnTime: json["ride_required_on_time"],
+        odometerStartReading: json["odometer_start_reading"],
+        odometerEndReading: json["odometer_end_reading"],
+        consumerName: json["consumer_name"],
+        drivername: json["drivername"],
+        RideDataDriverPhone: json["driver_phone"],
+        moyenne: json["moyenne"],
+        moyenneDriver: json["moyenne_driver"],
+        idVehicule: json["idVehicule"],
+        brand: json["brand"],
+        model: json["model"],
+        color: json["color"],
+        numberplate: json["numberplate"],
+        vehicleImage: json["vehicle_image"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "id_user_app": idUserApp,
+        "distance_unit": distanceUnit,
+        "depart_name": departName,
+        "destination_name": destinationName,
+        "otp": otp,
+        "latitude_depart": latitudeDepart,
+        "longitude_depart": longitudeDepart,
+        "latitude_arrivee": latitudeArrivee,
+        "longitude_arrivee": longitudeArrivee,
+        "number_poeple": numberPoeple,
+        "place": place,
+        "statut": statut,
+        "id_conducteur": idConducteur,
+        "creer": creer,
+        "trajet": trajet,
+        "feel_safe_driver": feelSafeDriver,
+        "nom": nom,
+        "prenom": prenom,
+        "existing_user_id": existingUserId,
+        "distance": distance,
+        "ride_type": rideType,
+        "phone": phone,
+        "photo_path": photoPath,
+        "nomConducteur": nomConducteur,
+        "prenomConducteur": prenomConducteur,
+        "driverPhone": driverPhone,
+        "date_retour": dateRetour,
+        "heure_retour": heureRetour,
+        "statut_round": statutRound,
+        "montant": montant,
+        "duree": duree,
+        "userId": userId,
+        "statut_paiement": statutPaiement,
+        "payment": payment,
+        "payment_image": paymentImage,
+        "trip_objective": tripObjective,
+        "age_children1": ageChildren1,
+        "age_children2": ageChildren2,
+        "age_children3": ageChildren3,
+        "stops": stops,
+        "tax": tax,
+        "tip_amount": tipAmount,
+        "discount": discount,
+        "admin_commission": adminCommission,
+        "user_info": userInfo,
+        "vehicle_id": vehicleId,
+        "bookfor_others_mobileno": bookforOthersMobileno,
+        "bookfor_others_name": bookforOthersName,
+        "bookingtype": bookingtype,
+        "ride_required_on_date": rideRequiredOnDate,
+        "ride_required_on_time": rideRequiredOnTime,
+        "odometer_start_reading": odometerStartReading,
+        "odometer_end_reading": odometerEndReading,
+        "consumer_name": consumerName,
+        "drivername": drivername,
+        "driver_phone": RideDataDriverPhone,
+        "moyenne": moyenne,
+        "moyenne_driver": moyenneDriver,
+        "idVehicule": idVehicule,
+        "brand": brand,
+        "model": model,
+        "color": color,
+        "numberplate": numberplate,
+        "vehicle_image": vehicleImage,
+      };
 }
 
 class Stops {

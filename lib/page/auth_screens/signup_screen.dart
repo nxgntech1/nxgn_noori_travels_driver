@@ -203,7 +203,7 @@ class SignupScreen extends StatelessWidget {
                                           Preferences.setInt(Preferences.userId, int.parse(value.userData!.id.toString()));
                                           Preferences.setString(Preferences.user, jsonEncode(value));
                                           Get.offAll(const LoginScreen());
-                                          statusDailog();
+                                          statusDailog(context);
                                           //
                                           // await Preferences.setUserData(value);
                                         } else {
@@ -483,46 +483,30 @@ class SignupScreen extends StatelessWidget {
     );
   }
 
-  statusDailog() {
-    Get.dialog(
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Material(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 10),
-                      Text(
-                        "Thank You!",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Thank you for registering with us.You will receive a call in the next 24 hours regarding your approval status.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(height: 30),
-                    ],
-                  ),
-                ),
-              ),
+  statusDailog(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // <-- SEE HERE
+          title: Text('Thank You!'.tr),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Thank you for registering with us. You will receive a call in the next 24 hours regarding your approval status."),
+              ],
             ),
           ),
-        ],
-      ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'.tr),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

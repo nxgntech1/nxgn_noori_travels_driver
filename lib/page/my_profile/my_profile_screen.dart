@@ -14,11 +14,14 @@ import 'package:cabme_driver/themes/responsive.dart';
 import 'package:cabme_driver/themes/text_field_them.dart';
 import 'package:cabme_driver/utils/Preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../widget/appbar.dart';
 
@@ -53,9 +56,9 @@ class MyProfileScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: ConstantColors.background,
             appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child:CustomAppBar(title: "my_profile"),
-          ),
+              preferredSize: Size.fromHeight(50),
+              child: CustomAppBar(title: "my_profile"),
+            ),
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -185,11 +188,10 @@ class MyProfileScreen extends StatelessWidget {
                                           ShowToastDialog.showToast(value['message']);
                                           ShowToastDialog.showToast("Updated!!");
                                           Get.back();
-                                        }
-                                        else {
+                                        } else {
                                           ShowToastDialog.showToast(value['error']);
                                           Get.back();
-                                       }
+                                        }
                                       }
                                     });
                                   }
@@ -938,12 +940,43 @@ class MyProfileScreen extends StatelessWidget {
   }
 
   final ImagePicker _imagePicker = ImagePicker();
+  Future<bool> requestStorageOrGalleryPermission() async {
+    final plugin = DeviceInfoPlugin();
+    final android = Platform.isAndroid ? await plugin.androidInfo : null;
+    Platform.isAndroid
+        ? android!.version.sdkInt <= 32
+            ? await Permission.storage.request()
+            : await Permission.photos.request()
+        : await Permission.photos.request();
+    return Platform.isAndroid
+        ? android!.version.sdkInt <= 32
+            ? Permission.storage.isGranted
+            : Permission.photos.isGranted
+        : Permission.photos.isGranted;
+  }
 
   Future pickFile1(MyProfileController controller, {required ImageSource source}) async {
     try {
-      XFile? image = await _imagePicker.pickImage(source: source);
+      if (Platform.isAndroid) {
+        var status = await Permission.camera.request();
+        //bool galleryPermission = await requestStorageOrGalleryPermission();
+        if (!status.isGranted)
+        //&& !galleryPermission)
+        {
+          // Handle denied or restricted permission here
+          return;
+        }
+      }
+
+      XFile? image = await _imagePicker.pickImage(source: source, imageQuality: 25);
+
       if (image == null) return;
-      Get.back();
+
+      final croppedFile = await _cropImage(File(image.path));
+      if (croppedFile == null) {
+        return;
+      }
+
       controller.uploadPhoto(File(image.path)).then((value) async {
         if (value != null) {
           if (value["success"] == "Success") {
@@ -952,7 +985,7 @@ class MyProfileScreen extends StatelessWidget {
             Preferences.setString(Preferences.user, jsonEncode(userModel.toJson()));
             controller.getUsrData();
             dashboardController.getUsrData();
-            ShowToastDialog.showToast("Upload successfully!".tr);
+            ShowToastDialog.showToast("Uploaded successfully".tr);
           } else {
             ShowToastDialog.showToast(value['error']);
           }
@@ -1037,4 +1070,38 @@ class MyProfileScreen extends StatelessWidget {
   //         );
   //       });
   // }
+  Future<CroppedFile?> _cropImage(File imageFile) async {
+    try {
+      return await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 50,
+        maxWidth: 200,
+        maxHeight: 200,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: ConstantColors.primary,
+            toolbarWidgetColor: Colors.white,
+            backgroundColor: Colors.black, // Set the background color
+            activeControlsWidgetColor: ConstantColors.primary, // Active controls color
+            dimmedLayerColor: Colors.black.withOpacity(0.7), // Dimmed layer color
+            cropFrameColor: ConstantColors.primary, // Crop frame color
+            cropGridColor: Colors.white, // Crop grid color
+            initAspectRatio: CropAspectRatioPreset.original,
+
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+    } catch (e) {
+      print('Error cropping image: $e');
+      return null; // Handle or log the error accordingly
+    }
+  }
 }

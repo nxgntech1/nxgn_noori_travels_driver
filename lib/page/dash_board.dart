@@ -50,16 +50,13 @@ class DashBoard extends StatelessWidget {
           },
           child: Scaffold(
             appBar: AppBar(
-              backgroundColor:
-                  controller.selectedDrawerIndex.value != 0
-                      ? ConstantColors.primary
-                      : ConstantColors.background,
+              backgroundColor: controller.selectedDrawerIndex.value != 0 ? ConstantColors.primary : ConstantColors.background,
               elevation: 0,
-              centerTitle: controller.selectedDrawerIndex.value != 0?false:true,
+              centerTitle: controller.selectedDrawerIndex.value != 0 ? false : true,
               title: controller.selectedDrawerIndex.value != 0
                   ? Text(
                       controller.drawerItems[controller.selectedDrawerIndex.value].title.toString(),
-                      style: TextStyle(color: controller.selectedDrawerIndex.value == 0?Colors.black:Colors.white,fontSize: 18),
+                      style: TextStyle(color: controller.selectedDrawerIndex.value == 0 ? Colors.black : Colors.white, fontSize: 18),
                     )
                   : Container(
                       width: Responsive.width(50, context),
@@ -92,7 +89,7 @@ class DashBoard extends StatelessWidget {
                               print(controller.userModel.value.userData!.isVerified);
                               // if (controller.userModel.value.userData!.statutVehicule == "no") {
                               //   _showAlertDialog(context, "vehicleInformation");
-                              // } else 
+                              // } else
                               if (controller.userModel.value.userData!.isVerified == "no" || controller.userModel.value.userData!.isVerified!.isEmpty) {
                                 _showAlertDialog(context, "document");
                               } else {
@@ -127,7 +124,8 @@ class DashBoard extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   'Online'.tr,
-                                  style: GoogleFonts.poppins(color: controller.isActive.value == true ? Colors.black : Colors.white, fontWeight: FontWeight.w500, fontSize: 14),
+                                  style: GoogleFonts.poppins(
+                                      color: controller.isActive.value == true ? Colors.black : Colors.white, fontWeight: FontWeight.w500, fontSize: 14),
                                 ),
                               ),
                             ),
@@ -164,7 +162,8 @@ class DashBoard extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   'Offline'.tr,
-                                  style: GoogleFonts.poppins(color: controller.isActive.value == false ? Colors.black : Colors.white, fontWeight: FontWeight.w500, fontSize: 14),
+                                  style: GoogleFonts.poppins(
+                                      color: controller.isActive.value == false ? Colors.black : Colors.white, fontWeight: FontWeight.w500, fontSize: 14),
                                 ),
                               ),
                             ),
@@ -198,7 +197,7 @@ class DashBoard extends StatelessWidget {
                     child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
-                          color: controller.selectedDrawerIndex.value == 0?Colors.white:ConstantColors.primary,
+                          color: controller.selectedDrawerIndex.value == 0 ? Colors.white : ConstantColors.primary,
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                               color: ConstantColors.primary.withOpacity(0.1),
@@ -207,7 +206,10 @@ class DashBoard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Icon(Icons.menu_rounded,color: controller.selectedDrawerIndex.value != 0?Colors.white:Colors.black,)
+                        child: Icon(
+                          Icons.menu_rounded,
+                          color: controller.selectedDrawerIndex.value != 0 ? Colors.white : Colors.black,
+                        )
                         // Image.asset(
                         //   "assets/icons/ic_side_menu.png",
                         //   color: controller.selectedDrawerIndex.value != 0?Colors.white:Colors.black,
@@ -234,13 +236,13 @@ class DashBoard extends StatelessWidget {
         leading: Icon(d.icon),
         title: Text(d.title),
         selectedColor: ConstantColors.primary,
-        selected: false,//i == controller.selectedDrawerIndex.value,
-        onTap: () => controller.onSelectItem(i,context),
+        selected: false, //i == controller.selectedDrawerIndex.value,
+        onTap: () => controller.onSelectItem(i, context),
       ));
     }
     return Drawer(
       child: Column(
-         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: ListView(
@@ -306,18 +308,17 @@ class DashBoard extends StatelessWidget {
                           ],
                         )),
                 Column(children: drawerOptions),
-                
               ],
             ),
           ),
           Container(
             padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    'V : ${Constant.appVersion.toString()}     ',
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
+            child: Text(
+              'V : ${Constant.appVersion.toString()}     ',
+              textAlign: TextAlign.right,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
         ],
       ),
     );
@@ -336,24 +337,18 @@ class DashBoard extends StatelessWidget {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your document verification is currently in progress. You will receive a call once it is verified and receive the ride notification'.tr),
+                Text('Your document verification is currently in progress. You will receive a call once it is verified, followed by a ride notification.'.tr),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('No'.tr),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-            TextButton(
-              child: Text('Yes'.tr),
+              child: Text('OK'.tr),
               onPressed: () {
                 if (type == "document") {
-                  controllerDashBoard.onSelectItem(1,context);
+                  controllerDashBoard.onSelectItem(1, context);
                 } else {
-                  controllerDashBoard.onSelectItem(4,context);
+                  Get.back();
                 }
               },
             ),

@@ -88,6 +88,8 @@ dependencies:
   uuid: any
   permission_handler: ^11.3.1
   intl: ^0.19.0
+  image_cropper: ^7.0.5
+
 dependency_overrides:
   # webview_flutter: ^4.7.0
   # syncfusion_flutter_pdfviewer: any
