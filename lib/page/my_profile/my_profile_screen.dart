@@ -955,10 +955,21 @@ class MyProfileScreen extends StatelessWidget {
         : Permission.photos.isGranted;
   }
 
+  XFile? image;
+  Future<void> _openCamera() async {
+    try {
+      final XFile? photo = await ImagePicker().pickImage(source: ImageSource.camera);
+      image = photo;
+      print(image!.path);
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   Future pickFile1(MyProfileController controller, {required ImageSource source}) async {
     try {
+      var status = await Permission.camera.request();
       if (Platform.isAndroid) {
-        var status = await Permission.camera.request();
         //bool galleryPermission = await requestStorageOrGalleryPermission();
         if (!status.isGranted)
         //&& !galleryPermission)
@@ -967,17 +978,18 @@ class MyProfileScreen extends StatelessWidget {
           return;
         }
       }
+      await _openCamera();
 
-      XFile? image = await _imagePicker.pickImage(source: source, imageQuality: 25);
+      //XFile? image = await _imagePicker.pickImage(source: source, imageQuality: 25);
 
       if (image == null) return;
 
-      final croppedFile = await _cropImage(File(image.path));
+      final croppedFile = await _cropImage(File(image!.path));
       if (croppedFile == null) {
         return;
       }
 
-      controller.uploadPhoto(File(image.path)).then((value) async {
+      controller.uploadPhoto(File(image!.path)).then((value) async {
         if (value != null) {
           if (value["success"] == "Success") {
             UserModel userModel = Constant.getUserData();

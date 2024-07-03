@@ -1492,7 +1492,7 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                     txtColor: Colors.white,
                     onPress: () async {
                       if (controller.odoEndController.text.isNotEmpty &&
-                          (int.parse(data.odometerStartReading!) > int.parse(controller.odoStartController.text))) {
+                          (int.parse(data.odometerStartReading!) < int.parse(controller.odoEndController.text))) {
                         await controller.getCurrentLocation();
                         Map<String, String> bodyParams = {
                           "id_ride": data.id.toString(),
