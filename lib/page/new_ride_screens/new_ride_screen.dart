@@ -88,7 +88,9 @@ class _NewRideScreenState extends State<NewRideScreen> {
                           : controller.rideList.isEmpty
                               ? SingleChildScrollView(
                                   physics: const AlwaysScrollableScrollPhysics(),
-                                  child: SizedBox(height: Get.height, child: Constant.emptyView("Your don't have any ride booked.".tr)))
+                                  child: SizedBox(
+                                      height: Get.height,
+                                      child: Constant.emptyView("You have not been assigned any trip yet. \n Please change your status to Online.".tr)))
                               : ListView.builder(
                                   itemCount: controller.rideList.length,
                                   shrinkWrap: true,
@@ -1273,7 +1275,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
           borderRadius: BorderRadius.circular(4.0), // Optional: Rounded corners
         ),
         child: const Text(
-          "vehicle assigned",
+          "Vehicle assigned",
           style: TextStyle(
             fontSize: 13,
             // backgroundColor: ConstantColors.primary,
@@ -1319,7 +1321,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
           borderRadius: BorderRadius.circular(4.0), // Optional: Rounded corners
         ),
         child: const Text(
-          "on ride",
+          "On ride",
           style: TextStyle(
             fontSize: 13,
             color: Colors.white,
@@ -1334,7 +1336,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
           borderRadius: BorderRadius.circular(4.0), // Optional: Rounded corners
         ),
         child: const Text(
-          "completed",
+          "Completed",
           style: TextStyle(
             fontSize: 13,
             color: Colors.white,

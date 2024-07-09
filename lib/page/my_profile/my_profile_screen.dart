@@ -96,7 +96,7 @@ class MyProfileScreen extends StatelessWidget {
                                             child: CircularProgressIndicator(value: downloadProgress.progress),
                                           ),
                                           errorWidget: (context, url, error) => Image.asset(
-                                            "assets/images/appIcon.png",
+                                            "assets/images/user.png",
                                           ),
                                         )
                                       : CachedNetworkImage(
@@ -108,7 +108,7 @@ class MyProfileScreen extends StatelessWidget {
                                             child: CircularProgressIndicator(value: downloadProgress.progress),
                                           ),
                                           errorWidget: (context, url, error) => Image.asset(
-                                            "assets/images/appIcon.png",
+                                            "assets/images/user.png",
                                           ),
                                         ),
                                 ),
@@ -956,9 +956,9 @@ class MyProfileScreen extends StatelessWidget {
   }
 
   XFile? image;
-  Future<void> _openCamera() async {
+  Future<void> _openCamera(ImageSource source) async {
     try {
-      final XFile? photo = await ImagePicker().pickImage(source: ImageSource.camera);
+      final XFile? photo = await ImagePicker().pickImage(source: source, imageQuality: 50);
       image = photo;
       print(image!.path);
     } catch (e) {
@@ -978,7 +978,7 @@ class MyProfileScreen extends StatelessWidget {
           return;
         }
       }
-      await _openCamera();
+      await _openCamera(source);
 
       //XFile? image = await _imagePicker.pickImage(source: source, imageQuality: 25);
 
@@ -998,6 +998,7 @@ class MyProfileScreen extends StatelessWidget {
             controller.getUsrData();
             dashboardController.getUsrData();
             ShowToastDialog.showToast("Uploaded successfully".tr);
+            Get.back();
           } else {
             ShowToastDialog.showToast(value['error']);
           }

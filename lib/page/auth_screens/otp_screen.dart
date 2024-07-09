@@ -8,6 +8,7 @@ import 'package:cabme_driver/page/dash_board.dart';
 import 'package:cabme_driver/service/api.dart';
 import 'package:cabme_driver/themes/button_them.dart';
 import 'package:cabme_driver/utils/Preferences.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -74,7 +75,7 @@ class OtpScreen extends StatelessWidget {
                             length: 4,
                           ),
                         ),
-                         const SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Padding(
@@ -91,86 +92,104 @@ class OtpScreen extends StatelessWidget {
                                   ShowToastDialog.showLoader("Verify OTP".tr);
                                   //PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId.toString(), smsCode: textEditingController.text);
                                   // try {
-                                    // await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
-                                    //   Map<String, String> bodyParams = {
-                                    //     'phone': phoneNumber.toString(),
-                                    //     'user_cat': "driver",
-                                    //   };
-                                     Map<String, String> bodyParams = {
+                                  // await FirebaseAuth.instance.signInWithCredential(credential).then((value) async {
+                                  //   Map<String, String> bodyParams = {
+                                  //     'phone': phoneNumber.toString(),
+                                  //     'user_cat': "driver",
+                                  //   };
+                                  Map<String, String> bodyParams = {
                                     "phone": phoneNumber.toString(),
                                     "account_type": "driver",
                                     "otp": textEditingController.text
                                   };
                                   bool? otpVerify = await controller.otpVerify(bodyParams);
-                                    if (otpVerify == true) {
-                                      await controller.phoneNumberIsExit( {
-                                            'phone': phoneNumber.toString(),
-                                            'user_cat': "driver",
-                                          }).then((value) async {
-                                        if (value == true) {
-                                          Map<String, String> bodyParamsLocal = {
-                                            'phone': phoneNumber.toString(),
-                                            'user_cat': "driver",
-                                          };
-                                          await controller.getDataByPhoneNumber(bodyParamsLocal).then((value) {
-                                            if (value != null) {
-                                              if (value.success == "success") {
-                                                ShowToastDialog.closeLoader();
-                                                Preferences.setString(Preferences.user, jsonEncode(value));
-                                                UserData? userData = value.userData;
-                                                Preferences.setInt(Preferences.userId, int.parse(userData!.id.toString()));
-                                                Preferences.setString(Preferences.accesstoken, value.userData!.accesstoken.toString());
-                                                API.header['accesstoken'] = Preferences.getString(Preferences.accesstoken);
+                                  if (otpVerify == true) {
+                                    await controller.phoneNumberIsExit({
+                                      'phone': phoneNumber.toString(),
+                                      'user_cat': "driver",
+                                    }).then((value) async {
+                                      if (value == true) {
+                                        Map<String, String> bodyParamsLocal = {
+                                          'phone': phoneNumber.toString(),
+                                          'user_cat': "driver",
+                                        };
+                                        await controller.getDataByPhoneNumber(bodyParamsLocal).then((value) {
+                                          if (value != null) {
+                                            if (value.success == "success") {
+                                              ShowToastDialog.closeLoader();
+                                              Preferences.setString(Preferences.user, jsonEncode(value));
+                                              UserData? userData = value.userData;
+                                              Preferences.setInt(Preferences.userId, int.parse(userData!.id.toString()));
+                                              Preferences.setString(Preferences.accesstoken, value.userData!.accesstoken.toString());
+                                              API.header['accesstoken'] = Preferences.getString(Preferences.accesstoken);
 
-                                                ShowToastDialog.closeLoader();
-                                                Preferences.setBoolean(Preferences.isLogin, true);
-                                                Get.offAll(() => DashBoard());
+                                              ShowToastDialog.closeLoader();
+                                              Preferences.setBoolean(Preferences.isLogin, true);
+                                              Get.offAll(() => DashBoard());
 
-                                                // if (userData.statutVehicule != "yes" || userData.statutVehicule!.isEmpty) {
-                                                //   Get.to(() => const VehicleInfoScreen());
-                                                // } else {
-                                                //
-                                                // }
-                                              } else {
-                                                ShowToastDialog.closeLoader();
-                                                ShowToastDialog.showToast(value.error);
-                                              }
+                                              // if (userData.statutVehicule != "yes" || userData.statutVehicule!.isEmpty) {
+                                              //   Get.to(() => const VehicleInfoScreen());
+                                              // } else {
+                                              //
+                                              // }
                                             } else {
                                               ShowToastDialog.closeLoader();
+                                              ShowToastDialog.showToast(value.error);
                                             }
-                                          });
-                                        } else if (value == false) {
-                                          ShowToastDialog.closeLoader();
-                                          Get.off(SignupScreen(
-                                            phoneNumber: phoneNumber.toString(),
-                                          ));
-                                        }
-                                      });
-                                  //   });
-                                  // } on FirebaseException catch (e) {
-                                  //   ShowToastDialog.closeLoader();
-                                  //   if (e.code == 'invalid-verification-code') {
-                                  //     ShowToastDialog.showToast("Invalid OTP".tr);
-                                  //   } else {
-                                  //     ShowToastDialog.showToast(e.code);
-                                  //   }
-                                  
-                                } 
-                                else {
+                                          } else {
+                                            ShowToastDialog.closeLoader();
+                                          }
+                                        });
+                                      } else if (value == false) {
+                                        ShowToastDialog.closeLoader();
+                                        Get.off(SignupScreen(
+                                          phoneNumber: phoneNumber.toString(),
+                                        ));
+                                      }
+                                    });
+                                    //   });
+                                    // } on FirebaseException catch (e) {
+                                    //   ShowToastDialog.closeLoader();
+                                    //   if (e.code == 'invalid-verification-code') {
+                                    //     ShowToastDialog.showToast("Invalid OTP".tr);
+                                    //   } else {
+                                    //     ShowToastDialog.showToast(e.code);
+                                    //   }
+                                  } else {
                                     if (otpVerify == null) {
-                                       Get.back();
+                                      Get.back();
                                       ShowToastDialog.showToast("Something went wrong. Please try again later".tr);
                                     }
                                     //  else {
                                     //   ShowToastDialog.showToast("Something went wrong. Please try again later".tr);
-                                      
+
                                     // }
                                   }
                                 } else {
                                   ShowToastDialog.showToast("Please Enter OTP".tr);
                                 }
                               },
-                            ))
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text.rich(
+                              textAlign: TextAlign.center,
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'You don’t have an OTP? '.tr,
+                                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                                  ),
+                                  TextSpan(
+                                      text: ' RESEND OTP'.tr,
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: ConstantColors.primary),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () async {
+                                          await controller.sendCode(controller.phoneNumber.value);
+                                        }),
+                                ],
+                              ),
+                            )),
                       ],
                     ),
                   ),

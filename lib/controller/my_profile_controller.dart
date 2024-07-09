@@ -62,7 +62,6 @@ class MyProfileController extends GetxController {
       Map<String, dynamic> response = jsonDecode(String.fromCharCodes(responseData));
       if (res.statusCode == 200) {
         ShowToastDialog.closeLoader();
-        Get.back();
         ShowToastDialog.showToast("Uploaded successfully");
         return response;
       } else {

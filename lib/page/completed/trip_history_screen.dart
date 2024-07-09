@@ -823,7 +823,7 @@ class TripHistoryScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(4.0), // Optional: Rounded corners
         ),
         child: const Text(
-          "Driver Assigned",
+          "Vehicle Assigned",
           style: TextStyle(
             fontSize: 13,
             color: Colors.white,
