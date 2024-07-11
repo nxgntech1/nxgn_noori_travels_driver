@@ -30,16 +30,15 @@ class LoginScreen extends StatelessWidget {
     return GetBuilder(
         init: LoginController(),
         initState: (state) async {
-          try{
+          try {
             PermissionStatus location = await Location().hasPermission();
             print(location);
-            if(PermissionStatus.granted != location){
+            if (PermissionStatus.granted != location) {
               showDialogPermission(context);
             }
-          }on PlatformException catch (e) {
+          } on PlatformException catch (e) {
             ShowToastDialog.showToast("${e.message}");
           }
-
         },
         builder: (controller) {
           return Scaffold(
@@ -84,10 +83,9 @@ class LoginScreen extends StatelessWidget {
                                   validators: (String? value) {
                                     if (value!.isEmpty) {
                                       return 'required';
-                                    }else if(!controller.emailValid(value)){
+                                    } else if (!controller.emailValid(value)) {
                                       return 'invalid email'.tr;
-                                    }
-                                    else{
+                                    } else {
                                       return null;
                                     }
                                   },
@@ -119,66 +117,64 @@ class LoginScreen extends StatelessWidget {
                                       txtColor: Colors.white,
                                       onPress: () async {
                                         if (_formKey.currentState!.validate()) {
-                                        FocusScope.of(context).unfocus();
-                                        if(controller.emailValid(_emailController.text.trim())){
-                                          Map<String, String> bodyParams = {
-                                            'email': _emailController.text.trim(),
-                                            'mdp': _passwordController.text,
-                                            'user_cat': 'driver',
-                                          };
-                                          await controller.loginAPI(bodyParams).then((value) {
-                                            if (value != null) {
-                                              if (value.success == "success") {
-                                                Preferences.setString(Preferences.user, jsonEncode(value));
-                                                Preferences.setBoolean(Preferences.isLogin, true);
-                                                UserData? userData = value.userData;
-                                                Preferences.setInt(Preferences.userId, int.parse(userData!.id.toString()));
-                                                Get.offAll(DashBoard(), duration: const Duration(milliseconds: 400), transition: Transition.rightToLeft);
+                                          FocusScope.of(context).unfocus();
+                                          if (controller.emailValid(_emailController.text.trim())) {
+                                            Map<String, String> bodyParams = {
+                                              'email': _emailController.text.trim(),
+                                              'mdp': _passwordController.text,
+                                              'user_cat': 'driver',
+                                            };
+                                            await controller.loginAPI(bodyParams).then((value) {
+                                              if (value != null) {
+                                                if (value.success == "success") {
+                                                  Preferences.setString(Preferences.user, jsonEncode(value));
+                                                  Preferences.setBoolean(Preferences.isLogin, true);
+                                                  UserData? userData = value.userData;
+                                                  Preferences.setInt(Preferences.userId, int.parse(userData!.id.toString()));
+                                                  Get.offAll(DashBoard(), duration: const Duration(milliseconds: 400), transition: Transition.rightToLeft);
 
-                                                // if (userData.statutVehicule != "yes" || userData.statutVehicule!.isEmpty) {
-                                                //   Get.to(() => VehicleInfoScreen(), duration: const Duration(milliseconds: 400), transition: Transition.rightToLeft);
-                                                // }
-                                                // // else if (userData.photoPath == null) {
-                                                // //   Get.to(AddProfilePhotoScreen(fromOtp: false));
-                                                // // }
-                                                // // else if (userData.photoLicencePath == null) {
-                                                // //   Get.to(
-                                                // //       () => DocumentVerifyScreen(
-                                                // //             fromOtp: false,
-                                                // //           ),
-                                                // //       duration: const Duration(milliseconds: 400),
-                                                // //       transition: Transition.rightToLeft);
-                                                // // }
-                                                // // else if (userData.photoRoadWorthyPath == null) {
-                                                // //   Get.to(
-                                                // //       () => const AddRoadWorthyDocScreen(
-                                                // //             fromOtp: false,
-                                                // //           ),
-                                                // //       duration: const Duration(milliseconds: 400),
-                                                // //       transition: Transition.rightToLeft);
-                                                // // } else if (userData.photoCarServiceBookPath == null) {
-                                                // //   Get.to(
-                                                // //       () => AddCarServiceBookScreen(
-                                                // //             fromOtp: false,
-                                                // //           ),
-                                                // //       duration: const Duration(milliseconds: 400),
-                                                // //       transition: Transition.rightToLeft);
-                                                // // }
-                                                // else {
-                                                //   Preferences.setBoolean(Preferences.isLogin, true);
-                                                //   Get.offAll(DashBoard(), duration: const Duration(milliseconds: 400), transition: Transition.rightToLeft);
-                                                // }
-                                              } else {
-                                                ShowToastDialog.showToast(value.error);
+                                                  // if (userData.statutVehicule != "yes" || userData.statutVehicule!.isEmpty) {
+                                                  //   Get.to(() => VehicleInfoScreen(), duration: const Duration(milliseconds: 400), transition: Transition.rightToLeft);
+                                                  // }
+                                                  // // else if (userData.photoPath == null) {
+                                                  // //   Get.to(AddProfilePhotoScreen(fromOtp: false));
+                                                  // // }
+                                                  // // else if (userData.photoLicencePath == null) {
+                                                  // //   Get.to(
+                                                  // //       () => DocumentVerifyScreen(
+                                                  // //             fromOtp: false,
+                                                  // //           ),
+                                                  // //       duration: const Duration(milliseconds: 400),
+                                                  // //       transition: Transition.rightToLeft);
+                                                  // // }
+                                                  // // else if (userData.photoRoadWorthyPath == null) {
+                                                  // //   Get.to(
+                                                  // //       () => const AddRoadWorthyDocScreen(
+                                                  // //             fromOtp: false,
+                                                  // //           ),
+                                                  // //       duration: const Duration(milliseconds: 400),
+                                                  // //       transition: Transition.rightToLeft);
+                                                  // // } else if (userData.photoCarServiceBookPath == null) {
+                                                  // //   Get.to(
+                                                  // //       () => AddCarServiceBookScreen(
+                                                  // //             fromOtp: false,
+                                                  // //           ),
+                                                  // //       duration: const Duration(milliseconds: 400),
+                                                  // //       transition: Transition.rightToLeft);
+                                                  // // }
+                                                  // else {
+                                                  //   Preferences.setBoolean(Preferences.isLogin, true);
+                                                  //   Get.offAll(DashBoard(), duration: const Duration(milliseconds: 400), transition: Transition.rightToLeft);
+                                                  // }
+                                                } else {
+                                                  ShowToastDialog.showToast(value.error);
+                                                }
                                               }
-                                            }
-                                          });
+                                            });
+                                          } else {
+                                            //ShowToastDialog.showToast("Enter valid email");
+                                          }
                                         }
-                                        else{
-                                         //ShowToastDialog.showToast("Enter valid email");
-                                        }
-                                        }
-                                        
                                       },
                                     )),
                                 GestureDetector(

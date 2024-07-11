@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cabme_driver/constant/constant.dart';
 import 'package:cabme_driver/constant/show_toast_dialog.dart';
 import 'package:cabme_driver/controller/dash_board_controller.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../widget/appbar.dart';
@@ -26,19 +29,21 @@ class DocumentStatusScreen extends StatelessWidget {
           backgroundColor: ConstantColors.background,
           appBar: const PreferredSize(
             preferredSize: Size.fromHeight(50),
-            child:CustomAppBar(title: "Documents"),
+            child: CustomAppBar(title: "Documents"),
           ),
           body: controller.isLoading.value
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
               : SingleChildScrollView(
-                child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10,),
-                    //const Text("     Document details",style: TextStyle(fontSize:16,color: Color(0xff9090AD)),),
-                    ListView.builder(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      //const Text("     Document details",style: TextStyle(fontSize:16,color: Color(0xff9090AD)),),
+                      ListView.builder(
                         itemCount: controller.documentList.length,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -126,7 +131,7 @@ class DocumentStatusScreen extends StatelessWidget {
                                     Visibility(
                                       visible: controller.documentList[index].documentStatus != "Approved",
                                       child: GestureDetector(
-                                        onTap: (){
+                                        onTap: () {
                                           buildBottomSheet(context, controller, index, controller.documentList[index].id.toString());
                                         },
                                         child: Container(
@@ -151,9 +156,9 @@ class DocumentStatusScreen extends StatelessWidget {
                           );
                         },
                       ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
           // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           // floatingActionButton: Visibility(
           //   visible: true,
@@ -252,8 +257,11 @@ class DocumentStatusScreen extends StatelessWidget {
     try {
       XFile? image = await _imagePicker.pickImage(source: source);
       if (image == null) return;
-
-      controller.updateDocument(documentId, image.path).then((value) {
+      final croppedFile = await _cropImage(File(image.path));
+      if (croppedFile == null) {
+        return;
+      }
+      controller.updateDocument(documentId, croppedFile.path).then((value) {
         controller.isLoading.value = true;
         controller.getCarServiceBooks();
       });
@@ -301,5 +309,40 @@ class DocumentStatusScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<CroppedFile?> _cropImage(File imageFile) async {
+    try {
+      return await ImageCropper().cropImage(
+        sourcePath: imageFile.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        cropStyle: CropStyle.rectangle,
+        compressFormat: ImageCompressFormat.jpg,
+        compressQuality: 50,
+        maxWidth: 200,
+        maxHeight: 200,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: ConstantColors.primary,
+            toolbarWidgetColor: Colors.white,
+            backgroundColor: Colors.black, // Set the background color
+            activeControlsWidgetColor: ConstantColors.primary, // Active controls color
+            dimmedLayerColor: Colors.black.withOpacity(0.7), // Dimmed layer color
+            cropFrameColor: ConstantColors.primary, // Crop frame color
+            cropGridColor: Colors.white, // Crop grid color
+            initAspectRatio: CropAspectRatioPreset.original,
+
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+    } catch (e) {
+      print('Error cropping image: $e');
+      return null; // Handle or log the error accordingly
+    }
   }
 }

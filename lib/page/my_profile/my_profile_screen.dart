@@ -989,7 +989,7 @@ class MyProfileScreen extends StatelessWidget {
         return;
       }
 
-      controller.uploadPhoto(File(image!.path)).then((value) async {
+      controller.uploadPhoto(File(croppedFile.path)).then((value) async {
         if (value != null) {
           if (value["success"] == "Success") {
             UserModel userModel = Constant.getUserData();

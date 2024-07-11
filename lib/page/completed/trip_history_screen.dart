@@ -671,7 +671,7 @@ class TripHistoryScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                controller.singleRideDetails[0].numberplate!.isNotEmpty
+                                (controller.singleRideDetails[0].numberplate ?? "").isNotEmpty
                                     ? Column(
                                         children: [
                                           const Padding(
