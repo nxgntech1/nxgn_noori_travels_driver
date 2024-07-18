@@ -42,13 +42,11 @@
     <key>NSCameraUsageDescription</key>
     <string>Camera access is necessary to review order and also for profile picture.</string>
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>Your location is required for map benefits for you</string>
+    <string>We need access to your location to help you book rides from and to specific addresses, including your current location, ensuring accurate and efficient pickup and drop-off.</string>
     <key>NSLocationAlwaysUsageDescription</key>
-    <string>Your location is required for map benefits for you</string>
+    <string>We need access to your location to help you book rides from and to specific addresses, including your current location, ensuring accurate and efficient pickup and drop-off.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Your location is required for map benefits for you</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>We need this to provide voice communication.</string>
+    <string>We need access to your location to help you book rides from and to specific addresses, including your current location, ensuring accurate and efficient pickup and drop-off.</string>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>Access to the Photos is required to review order as well as to set a profile picture.</string>
     <key>NSPhotoLibraryUsageDescription</key>

@@ -8,7 +8,6 @@ import 'package:cabme_driver/model/trip_ride_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../themes/Constants.dart';
 import '../../themes/button_them.dart';
 import '../../themes/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';

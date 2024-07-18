@@ -105,7 +105,7 @@ class DashBoardController extends GetxController {
       isActive.value = userModel.value.userData!.online == "yes" ? true : false;
       if (userModel.value.userData!.isVerified == "no" || userModel.value.userData!.isVerified!.isEmpty) {
         //selectedDrawerIndex.value = 1;
-         Get.to(DocumentStatusScreen());
+        Get.to(DocumentStatusScreen());
       }
     }
   }
@@ -114,7 +114,7 @@ class DashBoardController extends GetxController {
   RxInt selectedDrawerIndex = 0.obs;
   var drawerItems = [];
   onSelectItem(int index, BuildContext context) {
-     getDrawerItem();
+    getDrawerItem();
     selectedDrawerIndex.value = 0;
     Get.back();
     if (index == 0) {
@@ -129,73 +129,73 @@ class DashBoardController extends GetxController {
       Get.to(const TermsOfServiceScreen());
     } else if (index == 5) {
       Get.to(const PrivacyPolicyScreen());
-    }
-    else if (index == 6) {
-       _showLogoutDialog(context);
+    } else if (index == 6) {
+      _showLogoutDialog(context);
     } else {
       Get.to(const NewRideScreen());
     }
     // }
     //Get.back();
   }
+
   void _showLogoutDialog(BuildContext context) {
     Get.dialog(
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Material(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        const Text(
-                          "Are you sure you want to logout?",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        const SizedBox(height: 30),
-                        //Buttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ButtonThem.buildButton(Get.context!, title: "Yes".tr, btnColor: ConstantColors.primary, txtColor: Colors.white, onPress: () {
-                              Preferences.clearKeyData(Preferences.isLogin);
-                              Preferences.clearKeyData(Preferences.user);
-                              Preferences.clearKeyData(Preferences.userId);
-                              Get.offAll(const LoginScreen());
-                            }, btnHeight: 35, btnWidthRatio: 0.3),
-                            // const SizedBox(
-                            //   width: 15,
-                            // ),
-                            ButtonThem.buildBorderButton(Get.context!,
-                                title: "No".tr,
-                                btnHeight: 35,
-                                btnWidthRatio: 0.3,
-                                btnColor: Colors.white,
-                                txtColor: ConstantColors.primary,
-                                onPress: () => Get.back(),
-                                btnBorderColor: ConstantColors.primary),
-                          ],
-                        ),
-                      ],
-                    ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Material(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Are you sure you want to logout?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      const SizedBox(height: 30),
+                      //Buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ButtonThem.buildButton(Get.context!, title: "Yes".tr, btnColor: ConstantColors.primary, txtColor: Colors.white, onPress: () {
+                            Preferences.clearKeyData(Preferences.isLogin);
+                            Preferences.clearKeyData(Preferences.user);
+                            Preferences.clearKeyData(Preferences.userId);
+                            Get.offAll(const LoginScreen());
+                          }, btnHeight: 35, btnWidthRatio: 0.3),
+                          // const SizedBox(
+                          //   width: 15,
+                          // ),
+                          ButtonThem.buildBorderButton(Get.context!,
+                              title: "No".tr,
+                              btnHeight: 35,
+                              btnWidthRatio: 0.3,
+                              btnColor: Colors.white,
+                              txtColor: ConstantColors.primary,
+                              onPress: () => Get.back(),
+                              btnBorderColor: ConstantColors.primary),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 
   updateCurrentLocation() async {

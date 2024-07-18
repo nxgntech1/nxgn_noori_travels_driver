@@ -64,6 +64,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'cabme-1b117.appspot.com',
     androidClientId: '527452785533-2edrgcd3depj6nc35git9jtoue6eohvc.apps.googleusercontent.com',
     iosClientId: '527452785533-q2lo3auir6juaei1dq5far9kp2f8ogus.apps.googleusercontent.com',
-    iosBundleId: 'com.nxgnnooritravels.driver.ios',
+    iosBundleId: 'com.nxgnnooritravels.driver',
   );
 }

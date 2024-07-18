@@ -29,17 +29,17 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder(
         init: LoginController(),
-        initState: (state) async {
-          try {
-            PermissionStatus location = await Location().hasPermission();
-            print(location);
-            if (PermissionStatus.granted != location) {
-              showDialogPermission(context);
-            }
-          } on PlatformException catch (e) {
-            ShowToastDialog.showToast("${e.message}");
-          }
-        },
+        // initState: (state) async {
+        //   try {
+        //     PermissionStatus location = await Location().hasPermission();
+        //     print(location);
+        //     if (PermissionStatus.granted != location) {
+        //       showDialogPermission(context);
+        //     }
+        //   } on PlatformException catch (e) {
+        //     ShowToastDialog.showToast("${e.message}");
+        //   }
+        // },
         builder: (controller) {
           return Scaffold(
             backgroundColor: ConstantColors.background,
