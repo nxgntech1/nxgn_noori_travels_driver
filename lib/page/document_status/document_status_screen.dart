@@ -257,11 +257,11 @@ class DocumentStatusScreen extends StatelessWidget {
     try {
       XFile? image = await _imagePicker.pickImage(source: source);
       if (image == null) return;
-      final croppedFile = await _cropImage(File(image.path));
-      if (croppedFile == null) {
-        return;
-      }
-      controller.updateDocument(documentId, croppedFile.path).then((value) {
+      //final croppedFile = await _cropImage(File(image.path));
+      // if (croppedFile == null) {
+      //   return;
+      // }
+      controller.updateDocument(documentId, image.path).then((value) {
         controller.isLoading.value = true;
         controller.getCarServiceBooks();
       });
