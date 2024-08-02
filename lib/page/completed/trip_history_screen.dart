@@ -128,6 +128,29 @@ class TripHistoryScreen extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15, right: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Expanded(
+                                  child: Text(
+                                "Package:",
+                                style: TextStyle(fontSize: 14),
+                              )),
+                              Expanded(
+                                child: Text(
+                                  controller.singleRideDetails[0].bookingtype.toString(),
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Container(
                           decoration: const BoxDecoration(
                             color: Colors.white,
@@ -687,7 +710,7 @@ class TripHistoryScreen extends StatelessWidget {
                                             padding: const EdgeInsets.only(top: 10),
                                             child: Row(
                                               children: [
-                                                controller.singleRideDetails[0].driverphoto != null
+                                                (controller.singleRideDetails[0].driverphoto != null && controller.singleRideDetails[0].driverphoto != "")
                                                     ? ClipRRect(
                                                         borderRadius: BorderRadius.circular(50),
                                                         child: CachedNetworkImage(
@@ -698,12 +721,12 @@ class TripHistoryScreen extends StatelessWidget {
                                                           fit: BoxFit.cover,
                                                           placeholder: (context, url) => Constant.loader(),
                                                           errorWidget: (context, url, error) => Image.asset(
-                                                            "assets/images/driver.png",
+                                                            "assets/images/user.png",
                                                           ),
                                                         ),
                                                       )
                                                     : Image.asset(
-                                                        "assets/images/driver.png",
+                                                        "assets/images/user.png",
                                                         height: 60,
                                                         width: 60,
                                                       ),

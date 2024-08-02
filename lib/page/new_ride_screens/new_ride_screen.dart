@@ -194,6 +194,29 @@ class _NewRideScreenState extends State<NewRideScreen> {
                     const SizedBox(
                       height: 10,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Expanded(
+                              child: Text(
+                            "Package:",
+                            style: TextStyle(fontSize: 14),
+                          )),
+                          Expanded(
+                            child: Text(
+                              data.bookingtype.toString(),
+                              textAlign: TextAlign.right,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -535,10 +558,8 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                       children: [
                                         Text('${data.prenom.toString()} ${data.nom.toString()}',
                                             style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                            "${DateFormat("dd MMM yyyy").format(DateFormat("dd MMM, yyyy hh:mm a").parse(data.rideRequiredOnDate!)).toString()}, ${data.rideRequiredOnTime}",
-                                            style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                        const SizedBox(height: 5),
+                                        Text(data.rideRequiredOnDate.toString(), style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
                                         // StarRating(size: 18, rating: double.parse(data.moyenneDriver.toString()), color: ConstantColors.yellow),
                                       ],
                                     ),
@@ -1593,7 +1614,7 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller, 
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: 280,
+                  height: 240,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(color: Color(0xff46CA5D), borderRadius: BorderRadius.all(Radius.circular(20))),
                   child: Column(
@@ -1615,7 +1636,7 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller, 
                   ),
                 ),
                 const SizedBox(
-                  height: 140,
+                  height: 100,
                 ),
                 Container(
                   padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),

@@ -116,13 +116,18 @@ class DocumentStatusScreen extends StatelessWidget {
                                     ),
                                     controller.documentList[index].documentPath!.isEmpty
                                         ? Container()
-                                        : ClipRRect(
-                                            borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                            child: Image.network(
-                                              controller.documentList[index].documentPath!,
-                                              height: Responsive.height(25, context),
-                                              width: Responsive.width(90, context),
-                                              fit: BoxFit.cover,
+                                        : GestureDetector(
+                                            onTap: () {
+                                              _showImagePopup(context, controller.documentList[index].documentPath!);
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                              child: Image.network(
+                                                controller.documentList[index].documentPath!,
+                                                height: Responsive.height(25, context),
+                                                width: Responsive.width(90, context),
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                     const SizedBox(
@@ -176,6 +181,29 @@ class DocumentStatusScreen extends StatelessWidget {
           // )
         );
       },
+    );
+  }
+
+  void _showImagePopup(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.all(10),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

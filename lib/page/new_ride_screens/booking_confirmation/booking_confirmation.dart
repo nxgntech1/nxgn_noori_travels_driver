@@ -46,7 +46,7 @@ class BookingConfirmation extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Image.asset('assets/images/like.png', height: 80),
+                  child: Image.asset('assets/images/like.png', height: 50),
                 ),
                 const SizedBox(height: 15),
                 const Center(
@@ -182,7 +182,7 @@ class BookingConfirmation extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 35),
+                const SizedBox(height: 55),
               ],
             ),
           ),
