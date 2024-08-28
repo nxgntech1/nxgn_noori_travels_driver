@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui';
 import 'package:cabme_driver/constant/constant.dart';
 import 'package:cabme_driver/constant/show_toast_dialog.dart';
 import 'package:cabme_driver/model/driver_location_update.dart';
@@ -18,23 +19,23 @@ import 'package:cabme_driver/utils/Preferences.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 
-import '../page/paymet/payment.dart';
 import '../themes/button_them.dart';
 import '../themes/constant_colors.dart';
 
 class DashBoardController extends GetxController {
   Location location = Location();
   late StreamSubscription<LocationData> locationSubscription;
-  Timer? locationUpdateTimer;
-
+  final FlutterBackgroundService _service = FlutterBackgroundService();
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  Timer? _timer;
 
   @override
   void onInit() {
@@ -86,7 +87,6 @@ class DashBoardController extends GetxController {
       //DrawerItem('Add Bank'.tr, Icons.account_balance),
       // DrawerItem('change_language'.tr, Icons.language),
       DrawerItem('contact_us'.tr, Icons.rate_review_outlined),
-      DrawerItem('payments'.tr, Icons.rate_review_outlined),
       DrawerItem('term_service'.tr, Icons.design_services),
       DrawerItem('privacy_policy'.tr, Icons.privacy_tip),
       DrawerItem('sign_out'.tr, Icons.logout),
@@ -133,12 +133,10 @@ class DashBoardController extends GetxController {
     } else if (index == 3) {
       Get.to(const ContactUsScreen());
     } else if (index == 4) {
-      Get.to(const PaymentScreen());
-    } else if (index == 5) {
       Get.to(const TermsOfServiceScreen());
-    } else if (index == 6) {
+    } else if (index == 5) {
       Get.to(const PrivacyPolicyScreen());
-    } else if (index == 7) {
+    } else if (index == 6) {
       _showLogoutDialog(context);
     } else {
       Get.to(const NewRideScreen());
@@ -212,7 +210,7 @@ class DashBoardController extends GetxController {
       PermissionStatus permissionStatus = await location.hasPermission();
       if (permissionStatus == PermissionStatus.granted) {
         location.enableBackgroundMode(enable: true);
-        location.changeSettings(accuracy: LocationAccuracy.high, distanceFilter: double.parse(Constant.driverLocationUpdateUnit.toString()));
+        location.changeSettings(distanceFilter: double.parse(Constant.driverLocationUpdateUnit.toString()));
         locationSubscription = location.onLocationChanged.listen((locationData) {
           LocationData currentLocation = locationData;
           Constant.currentLocation = locationData;
@@ -229,7 +227,7 @@ class DashBoardController extends GetxController {
         location.requestPermission().then((permissionStatus) {
           if (permissionStatus == PermissionStatus.granted) {
             location.enableBackgroundMode(enable: true);
-            location.changeSettings(accuracy: LocationAccuracy.high, distanceFilter: double.parse(Constant.driverLocationUpdateUnit.toString()));
+            location.changeSettings(distanceFilter: double.parse(Constant.driverLocationUpdateUnit.toString()));
             locationSubscription = location.onLocationChanged.listen((locationData) {
               LocationData currentLocation = locationData;
               Constant.currentLocation = locationData;
@@ -299,10 +297,8 @@ class DashBoardController extends GetxController {
       case 3:
         return const ContactUsScreen();
       case 4:
-        return const PaymentScreen();
-      case 5:
         return const TermsOfServiceScreen();
-      case 6:
+      case 5:
         return const PrivacyPolicyScreen();
       default:
         return Text("Error".toString());
@@ -336,53 +332,6 @@ class DashBoardController extends GetxController {
     //   }
     // }
   }
-
-  // void startBackgroundLocationUpdates() async {
-  //   final hasPermissions = await FlutterBackground.initialize();
-  //   if (hasPermissions) {
-  //     await FlutterBackground.enableBackgroundExecution();
-  //     // Now you can start location updates
-  //     startLocationUpdates();
-  //   }
-  // }
-
-  // void startLocationUpdates() {
-  //   locationUpdateTimer = Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
-  //     try {
-  //       LocationData location = await Location().getLocation();
-  //       debugPrint("Location Update: Latitude ${location.latitude}, Longitude ${location.longitude}");
-  //       await getdriverLocationUpdate(location.latitude.toString(), location.longitude.toString());
-  //     } catch (e) {
-  //       debugPrint('Error in location update: $e');
-  //     }
-  //   });
-  // }
-
-  // Future<dynamic> getdriverLocationUpdate(String latitude, String longitude) async {
-  //   try {
-  //     Map<String, dynamic> bodyParams = {
-  //       'id_driver': Preferences.getInt(Preferences.userId),
-  //       'latitude': latitude,
-  //       'longitude': longitude,
-  //     };
-  //     debugPrint("bodyparams data :  ${bodyParams.toString()}");
-  //     final response = await http.post(Uri.parse(API.getdriverLocationUpdate), headers: API.header, body: jsonEncode(bodyParams));
-
-  //     Map<String, dynamic> responseBody = json.decode(response.body);
-  //     if (response.statusCode == 200) {
-  //       return responseBody;
-  //     }
-  //   } on TimeoutException catch (e) {
-  //     ShowToastDialog.showToast(e.message.toString());
-  //   } on SocketException catch (e) {
-  //     ShowToastDialog.showToast(e.message.toString());
-  //   } on Error catch (e) {
-  //     ShowToastDialog.showToast(e.toString());
-  //   } catch (e) {
-  //     ShowToastDialog.showToast(e.toString());
-  //   }
-  //   return null;
-  // }
 
   Future<dynamic> setCurrentLocation(String latitude, String longitude) async {
     try {
@@ -486,4 +435,154 @@ class DashBoardController extends GetxController {
     }
     return null;
   }
+
+  Future<void> initializeService() async {
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'my_foreground',
+      'MY FOREGROUND SERVICE',
+      description: 'This channel is used for important notifications.',
+      importance: Importance.low,
+    );
+
+    if (Platform.isIOS || Platform.isAndroid) {
+      await _flutterLocalNotificationsPlugin.initialize(
+        const InitializationSettings(
+          iOS: DarwinInitializationSettings(),
+          android: AndroidInitializationSettings('ic_bg_service_small'),
+        ),
+      );
+    }
+
+    await _flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+
+    await _service.configure(
+      androidConfiguration: AndroidConfiguration(
+        onStart: startBackgroundService,
+        autoStart: false,
+        isForegroundMode: true,
+        notificationChannelId: 'my_foreground',
+        initialNotificationTitle: 'AWESOME SERVICE',
+        initialNotificationContent: 'Initializing',
+        foregroundServiceNotificationId: 888,
+      ),
+      iosConfiguration: IosConfiguration(
+        autoStart: false,
+        onForeground: startBackgroundService,
+        onBackground: DashBoardController.onIosBackground,
+      ),
+    );
+    await startBgService();
+  }
+
+  Future<dynamic> getdriverLocationUpdate(String latitude, String longitude, position) async {
+    try {
+      Map<String, dynamic> bodyParams = {
+        'id_driver': Preferences.getInt(Preferences.userId),
+        'latitude': latitude,
+        'longitude': longitude,
+      };
+      debugPrint("bodyparams data :  ${bodyParams.toString()}");
+      final response = await http.post(Uri.parse(API.getdriverLocationUpdate), headers: API.header, body: jsonEncode(bodyParams));
+
+      Map<String, dynamic> responseBody = json.decode(response.body);
+      if (response.statusCode == 200) {
+        _showNotification("data collected", "$position");
+        return responseBody;
+      }
+    } on TimeoutException catch (e) {
+      ShowToastDialog.showToast(e.message.toString());
+    } on SocketException catch (e) {
+      ShowToastDialog.showToast(e.message.toString());
+    } on Error catch (e) {
+      ShowToastDialog.showToast(e.toString());
+    } catch (e) {
+      ShowToastDialog.showToast(e.toString());
+    }
+    return null;
+  }
+
+  Future<void> startBgService() async {
+    FlutterBackgroundService().startService();
+    FlutterBackgroundService().invoke("setAsForeground");
+    FlutterBackgroundService().invoke("setAsBackground");
+
+    _timer = Timer.periodic(const Duration(seconds: 60), (timer) async {
+      try {
+        final position = await Geolocator.getCurrentPosition();
+        getdriverLocationUpdate("${position.latitude}", "${position.longitude}", position);
+      } catch (e) {
+        debugPrint('API Call Exception: $e');
+      }
+    });
+  }
+
+  Future<void> stopBgService() async {
+    final service = FlutterBackgroundService();
+    var isRunning = await service.isRunning();
+    service.invoke("stopService");
+    _timer?.cancel();
+  }
+
+  @pragma('vm:entry-point')
+  static Future<bool> onIosBackground(ServiceInstance service) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
+    return true;
+  }
+
+  Future<void> _showNotification(String title, String body) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'my_foreground',
+      'MY FOREGROUND SERVICE',
+      channelDescription: 'This channel is used for important notifications.',
+      importance: Importance.high,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
+    await _flutterLocalNotificationsPlugin.show(
+      888, // Notification ID
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'location_update',
+    );
+  }
+}
+
+@pragma('vm:entry-point')
+Future<void> startBackgroundService(ServiceInstance service) async {
+  DartPluginRegistrant.ensureInitialized();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+      debugPrint('setAsForegroundService Started');
+    });
+
+    service.on('setAsBackground').listen((event) {
+      service.setAsBackgroundService();
+      debugPrint('setAsBackgroundService Started');
+    });
+
+    service.on('stopService').listen((event) {
+      service.stopSelf();
+      debugPrint('Background Service Stopped');
+    });
+
+    service.on('update').listen((event) {
+      debugPrint('Service Update: $event');
+    });
+  }
+  await Future.delayed(const Duration(seconds: 2));
+  // Start the geofencing service
+  // int interval = 10; // seconds
+  // MainController().crateGeofence(interval);
+  DashBoardController().startBgService();
 }

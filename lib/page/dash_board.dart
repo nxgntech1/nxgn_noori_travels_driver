@@ -107,6 +107,7 @@ class DashBoard extends StatelessWidget {
                                       userModel.userData!.online = value['data']['online'];
                                       Preferences.setString(Preferences.user, jsonEncode(userModel.toJson()));
                                       controller.getUsrData();
+                                      controller.initializeService();
                                       ShowToastDialog.showToast(value['message']);
                                     } else {
                                       ShowToastDialog.showToast(value['error']);
@@ -146,6 +147,7 @@ class DashBoard extends StatelessWidget {
                                     userModel.userData!.online = value['data']['online'];
                                     Preferences.setString(Preferences.user, jsonEncode(userModel.toJson()));
                                     controller.getUsrData();
+                                    controller.stopBgService();
                                     ShowToastDialog.showToast(value['message']);
                                   } else {
                                     ShowToastDialog.showToast(value['error']);

@@ -15,13 +15,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'page/completed/trip_history_screen.dart';
 import 'service/localization_service.dart';
 import 'splash_screen.dart';
@@ -38,10 +36,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  bool hasPermissions = await FlutterBackground.initialize();
-  if (hasPermissions) {
-    await FlutterBackground.enableBackgroundExecution();
-  }
+  // bool hasPermissions = await FlutterBackground.initialize();
+  // if (hasPermissions) {
+  //   await FlutterBackground.enableBackgroundExecution();
+  // }
   // WidgetsFlutterBinding.ensureInitialized();
   // final hasPermissions = await FlutterBackground.initialize();
   // if (hasPermissions) {
