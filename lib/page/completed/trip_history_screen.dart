@@ -790,7 +790,7 @@ class TripHistoryScreen extends StatelessWidget {
                                         child: Align(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
-                                            "Booked By",
+                                            "Booked For",
                                             style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w600),
                                           ),
                                         ),
