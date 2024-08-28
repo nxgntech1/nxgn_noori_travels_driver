@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class SingleRideDetailsModel {
   final String? success;
   final dynamic error;
@@ -71,7 +73,7 @@ class SingleRideData {
   final String? subTotal;
   final String? bookingtype;
   final int? bookingTypeId;
-  final DateTime? rideRequiredOnDate;
+  final String? rideRequiredOnDate;
   final String? rideRequiredOnTime;
   final String? taxAmount;
   final String? bookforOthersMobileno;
@@ -100,6 +102,7 @@ class SingleRideData {
   final String? driverPhone;
   final String? driverphoto;
   final String? drivername;
+  final String? consumerName;
 
   SingleRideData({
     this.id,
@@ -169,6 +172,7 @@ class SingleRideData {
     this.driverPhone,
     this.drivername,
     this.driverphoto,
+    this.consumerName,
   });
 
   factory SingleRideData.fromRawJson(String str) => SingleRideData.fromJson(json.decode(str));
@@ -214,7 +218,8 @@ class SingleRideData {
         subTotal: json["sub_total"],
         bookingtype: json["bookingtype"],
         bookingTypeId: json["booking_type_id"],
-        rideRequiredOnDate: json["ride_required_on_date"] == null ? null : DateTime.parse(json["ride_required_on_date"]),
+        rideRequiredOnDate: json["ride_required_on_date"],
+        // rideRequiredOnDate: json["ride_required_on_date"] == null ? null : DateFormat('dd MMM, yyyy hh:mm a').parse(json["ride_required_on_date"]),
         rideRequiredOnTime: json["ride_required_on_time"],
         taxAmount: json["tax_amount"],
         bookforOthersMobileno: json["bookfor_others_mobileno"],
@@ -228,7 +233,8 @@ class SingleRideData {
         addon: json["addon"] == null ? [] : List<Addon>.from(json["addon"]!.map((x) => Addon.fromJson(x))),
         brand: json["brand"],
         model: json["model"],
-        bookigDate: json["BookigDate"] == null ? null : DateTime.parse(json["BookigDate"]),
+        bookigDate: json["BookigDate"] == null ? null : DateFormat('dd MMM, yyyy hh:mm a').parse(json["BookigDate"]),
+        // bookigDate: json["BookigDate"],
         bookingTime: json["BookingTime"],
         paymentmethod: json["paymentmethod"],
         idVehicule: json["idVehicule"],
@@ -243,6 +249,7 @@ class SingleRideData {
         driverPhone: json["driver_phone"],
         driverphoto: json["driverphoto"],
         drivername: json["drivername"],
+        consumerName: json["consumer_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -284,7 +291,7 @@ class SingleRideData {
         "sub_total": subTotal,
         "bookingtype": bookingtype,
         "booking_type_id": bookingTypeId,
-        "ride_required_on_date": rideRequiredOnDate?.toIso8601String(),
+        "ride_required_on_date": rideRequiredOnDate,
         "ride_required_on_time": rideRequiredOnTime,
         "tax_amount": taxAmount,
         "bookfor_others_mobileno": bookforOthersMobileno,
@@ -313,6 +320,7 @@ class SingleRideData {
         "driver_phone": driverPhone,
         "driverphoto": driverphoto,
         "drivername": drivername,
+        "consumer_name": consumerName,
       };
 }
 

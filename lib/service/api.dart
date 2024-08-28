@@ -125,9 +125,12 @@ class API {
 
   static const changestatusArrived = "${baseUrl}changestatus-arrived";
   static const changestatusStarttrip = "${baseUrl}changestatus-starttrip";
+  static const changestatusAfterOtp = "${baseUrl}update-arrival-odo";
   static const changestatusOnride = "${baseUrl}changestatus-onride";
   static const changestatusCompleted = "${baseUrl}changestatus-completed";
   static const cashCollected = "${baseUrl}cash-paid-request";
 
   static const getUserRidesDetails = "${baseUrl}get-user-rides-details";
+
+  static const getdriverLocationUpdate = "${baseUrl}driver-location_update";
 }

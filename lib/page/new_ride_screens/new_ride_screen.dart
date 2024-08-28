@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cabme_driver/constant/constant.dart';
 import 'package:cabme_driver/constant/show_toast_dialog.dart';
 import 'package:cabme_driver/controller/dash_board_controller.dart';
@@ -11,13 +15,20 @@ import 'package:cabme_driver/utils/Preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pinput/pinput.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../service/api.dart';
 import '../../themes/responsive.dart';
 import '../../themes/text_field_them.dart';
 import 'booking_confirmation/booking_confirmation.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 
 class NewRideScreen extends StatefulWidget {
   const NewRideScreen({super.key});
@@ -28,13 +39,78 @@ class NewRideScreen extends StatefulWidget {
 
 class _NewRideScreenState extends State<NewRideScreen> {
   final controllerDashBoard = Get.put(DashBoardController());
-  // final controller = Get.put(NewRideController());
+  Timer? locationUpdateTimer;
+
+  // Future<void> requestPermissions() async {
+  //   var status = await Permission.locationWhenInUse.request();
+  //   if (status.isGranted) {
+  //     // Request background location permission for Android 10+
+  //     if (await Permission.locationAlways.isDenied) {
+  //       status = await Permission.locationAlways.request();
+  //     }
+  //   }
+
+  //   if (status.isPermanentlyDenied) {
+  //     openAppSettings();
+  //   }
+  // }
 
   @override
   void initState() {
-    // getCurrentLocation(true);
-    // _getCurrentLocation();
+    // controllerDashBoard.getdriverLocationUpdate();
+    // startLocationUpdates();
+    // requestPermissions().then((_) {
+    //   startLocationUpdates();
+    // });
   }
+
+  // void startBackgroundLocationUpdates() async {
+  //   final hasPermissions = await FlutterBackground.initialize();
+  //   if (hasPermissions) {
+  //     await FlutterBackground.enableBackgroundExecution();
+  //     // Now you can start location updates
+  //     startLocationUpdates();
+  //   }
+  // }
+
+  // void startLocationUpdates() {
+  //   locationUpdateTimer = Timer.periodic(const Duration(seconds: 20), (Timer timer) async {
+  //     try {
+  //       LocationData location = await Location().getLocation();
+  //       debugPrint("Location Update: Latitude ${location.latitude}, Longitude ${location.longitude}");
+  //       // await getdriverLocationUpdate(location.latitude.toString(), location.longitude.toString());
+  //       // await getdriverLocationUpdate("17.4286566", "78.5489204");
+  //     } catch (e) {
+  //       debugPrint('Error in location update: $e');
+  //     }
+  //   });
+  // }
+
+  // Future<dynamic> getdriverLocationUpdate(String latitude, String longitude) async {
+  //   try {
+  //     Map<String, dynamic> bodyParams = {
+  //       'id_driver': Preferences.getInt(Preferences.userId),
+  //       'latitude': latitude,
+  //       'longitude': longitude,
+  //     };
+  //     debugPrint("bodyparams data :  ${bodyParams.toString()}");
+  //     final response = await http.post(Uri.parse(API.getdriverLocationUpdate), headers: API.header, body: jsonEncode(bodyParams));
+
+  //     Map<String, dynamic> responseBody = json.decode(response.body);
+  //     if (response.statusCode == 200) {
+  //       return responseBody;
+  //     }
+  //   } on TimeoutException catch (e) {
+  //     ShowToastDialog.showToast(e.message.toString());
+  //   } on SocketException catch (e) {
+  //     ShowToastDialog.showToast(e.message.toString());
+  //   } on Error catch (e) {
+  //     ShowToastDialog.showToast(e.toString());
+  //   } catch (e) {
+  //     ShowToastDialog.showToast(e.toString());
+  //   }
+  //   return null;
+  // }
 
   @override
   void dispose() {
@@ -43,31 +119,15 @@ class _NewRideScreenState extends State<NewRideScreen> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Accesstoken ${Preferences.getString(Preferences.accesstoken)}");
+    // debugPrint("new change");
+
+    debugPrint("Accesstoken new ${Preferences.getString(Preferences.accesstoken)}");
     return GetX<NewRideController>(
       init: NewRideController(),
       builder: (controller) {
-        // controller.sourceLat.value = controller.sourceLat.value.toDouble();
-        // controller.sourceLong.value = controller.sourceLat.value.toDouble();
-
         return Scaffold(
             resizeToAvoidBottomInset: true,
             backgroundColor: ConstantColors.background,
-            // floatingActionButton: FloatingActionButton(
-            //   backgroundColor: ConstantColors.primary,
-            //   onPressed: () {
-            //     print(controller.userModel.value.userData!.isVerified);
-            //     if (controller.userModel.value.userData!.isVerified == "yes") {
-            //       Get.to(() => const CreateRideScreen());
-            //     } else {
-            //       ShowToastDialog.showToast('Your document is not verified by admin'.tr);
-            //     }
-            //   },
-            //   child: const Icon(
-            //     Icons.add,
-            //     size: 35,
-            //   ),
-            // ),
             body: RefreshIndicator(
               onRefresh: () => controller.getNewRide(),
               child: Padding(
@@ -525,11 +585,11 @@ class _NewRideScreenState extends State<NewRideScreen> {
                         children: [
                           (data.photoPath != null && data.photoPath != "null")
                               ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(50),
                                   child: CachedNetworkImage(
                                     imageUrl: data.photoPath.toString(),
-                                    height: 80,
-                                    width: 80,
+                                    height: 60,
+                                    width: 60,
                                     fit: BoxFit.cover,
                                     placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                                     errorWidget: (context, url, error) => Image.asset(
@@ -544,26 +604,17 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                 ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: data.rideType! == 'driver' && data.existingUserId.toString() == "null"
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${data.userInfo!.name}', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                                        Text('${data.userInfo!.email}', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w400)),
-                                      ],
-                                    )
-                                  : Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${data.prenom.toString()} ${data.nom.toString()}',
-                                            style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
-                                        const SizedBox(height: 5),
-                                        Text(data.rideRequiredOnDate.toString(), style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
-                                        // StarRating(size: 18, rating: double.parse(data.moyenneDriver.toString()), color: ConstantColors.yellow),
-                                      ],
-                                    ),
-                            ),
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${data.consumerName}', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                                    const SizedBox(height: 5),
+                                    Text(data.rideRequiredOnDate.toString(), style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                    const SizedBox(height: 5),
+                                    Text('${data.phone}', style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                  ],
+                                )),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -572,11 +623,7 @@ class _NewRideScreenState extends State<NewRideScreen> {
                                 padding: const EdgeInsets.only(left: 10),
                                 child: InkWell(
                                   onTap: () {
-                                    if (data.rideType! == 'driver' && data.existingUserId.toString() == "null") {
-                                      Constant.makePhoneCall(data.userInfo!.phone.toString());
-                                    } else {
-                                      Constant.makePhoneCall(data.phone.toString());
-                                    }
+                                    Constant.makePhoneCall(data.phone.toString());
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(5.0), // Adjust the padding as needed
@@ -1436,6 +1483,98 @@ buildOdoMeterStartBottomSheet(BuildContext context, NewRideController controller
 
                         if (responceflag == 1) {
                           // controller.rideStatus.value = "Start Trip";
+                          // buildOdoMeterAfterOtpBottomSheet(context, controller, data);
+                          Get.back();
+                          String googleUrl =
+                              'https://www.google.com/maps/dir/?api=1&origin=${controller.driverLatitude},${controller.driverLongitude}&destination=${double.parse(data.latitudeDepart!)},${double.parse(data.longitudeDepart!)}';
+                          // 'https://www.google.com/maps/dir/?api=1&origin=17.2402684,78.4268102&destination=17.2402684,78.4268102';
+                          if (await canLaunch(googleUrl)) {
+                            Get.back();
+                            await launch(
+                              googleUrl,
+                            );
+                          } else {
+                            throw 'Could not open the map.';
+                          }
+                        }
+                      } else {
+                        ShowToastDialog.showToast("please enter odometer reading");
+                      }
+                    },
+                  ),
+                ],
+              ),
+            );
+          }),
+        );
+      });
+}
+
+buildOdoMeterAfterOtpBottomSheet(BuildContext context, NewRideController controller, RideData data) {
+  controller.odoStartController = TextEditingController();
+  return showModalBottomSheet(
+      isDismissible: false,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: StatefulBuilder(builder: (context, setState) {
+            return Container(
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              margin: const EdgeInsets.all(10),
+              //height: Responsive.height(25, context),
+              decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Enter odometer reading".tr,
+                    style: TextStyle(fontSize: 16, color: Colors.black.withOpacity(0.60)),
+                  ),
+                  TextFieldThem.boxBuildTextFieldWithDigitsOnly(
+                    hintText: ''.tr,
+                    controller: controller.odoSecondOdoController,
+                    textInputType: TextInputType.number,
+                    maxLength: 20,
+                    contentPadding: EdgeInsets.zero,
+                    suffixIconOrImage: "assets/icons/odometer.png",
+                    validators: (String? value) {
+                      if (value!.isNotEmpty) {
+                        return null;
+                      } else {
+                        return 'required'.tr;
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ButtonThem.buildButton(
+                    context,
+                    title: 'Start Trip'.tr,
+                    btnHeight: 45,
+                    //btnWidthRatio: 0.8,
+                    btnColor: ConstantColors.primary,
+                    txtColor: Colors.white,
+                    onPress: () async {
+                      if (controller.odoSecondOdoController.text.isNotEmpty) {
+                        await controller.getCurrentLocation();
+                        Map<String, String> bodyParams = {
+                          "id_ride": data.id.toString(),
+                          "id_user": data.userId.toString(),
+                          "odometer_arrival_reading": controller.odoSecondOdoController.text.toString(),
+                        };
+
+                        dynamic responceflag = await controller.changestatusAfterOtp(bodyParams);
+
+                        if (responceflag == 1) {
+                          // controller.rideStatus.value = "Start Trip";
+                          controller.rideStatus.value = "completed";
                           Get.back();
                           String googleUrl =
                               'https://www.google.com/maps/dir/?api=1&origin=${controller.driverLatitude},${controller.driverLongitude}&destination=${double.parse(data.latitudeDepart!)},${double.parse(data.longitudeDepart!)}';
@@ -1584,9 +1723,9 @@ buildOdoMeterEndBottomSheet(BuildContext context, NewRideController controller, 
                         }
                       } else {
                         if (int.parse(controller.odoEndController.text) < int.parse(controller.odoStartController.text)) {
-                          ShowToastDialog.showToast("please enter odometer reading accurate");
+                          ShowToastDialog.showToast("Please enter valid reading");
                         } else {
-                          ShowToastDialog.showToast("please enter odometer reading");
+                          ShowToastDialog.showToast("Please enter valid reading");
                         }
                       }
                     },
@@ -1669,7 +1808,7 @@ buildCashCollectBottomSheet(BuildContext context, NewRideController controller, 
 buildOTPBottomSheet(BuildContext context, NewRideController controller, data) {
   controller.otpController = TextEditingController();
   return showModalBottomSheet(
-      //isDismissible: false,
+      isDismissible: false,
       context: context,
       builder: (context) {
         return Padding(
@@ -1740,20 +1879,21 @@ buildOTPBottomSheet(BuildContext context, NewRideController controller, data) {
                           dynamic responceflag = await controller.changestatusOnride(bodyParams);
 
                           if (responceflag == 1) {
-                            controller.rideStatus.value = "completed";
-                            String googleUrl =
-                                'https://www.google.com/maps/dir/?api=1&origin=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
-                            //'https://www.google.com/maps/dir/?api=1&origin=17.4365738,78.3670849&destination=17.2402684,78.4268102';
-                            if (await canLaunch(googleUrl)) {
-                              await launch(
-                                googleUrl,
-                                // forceWebView: true,
-                                // enableJavaScript: true,
-                                // enableDomStorage: true,
-                              );
-                            } else {
-                              throw 'Could not open the map.';
-                            }
+                            await buildOdoMeterAfterOtpBottomSheet(context, controller, data);
+
+                            // String googleUrl =
+                            //     'https://www.google.com/maps/dir/?api=1&origin=${double.parse(data.latitudeDepart.toString())},${double.parse(data.longitudeDepart.toString())}&destination=${double.parse(data.latitudeArrivee.toString())},${double.parse(data.longitudeArrivee.toString())}';
+                            // //'https://www.google.com/maps/dir/?api=1&origin=17.4365738,78.3670849&destination=17.2402684,78.4268102';
+                            // if (await canLaunch(googleUrl)) {
+                            //   await launch(
+                            //     googleUrl,
+                            //     // forceWebView: true,
+                            //     // enableJavaScript: true,
+                            //     // enableDomStorage: true,
+                            //   );
+                            // } else {
+                            //   throw 'Could not open the map.';
+                            // }
                           } else {
                             ShowToastDialog.showToast("please enter valid otp");
                           }

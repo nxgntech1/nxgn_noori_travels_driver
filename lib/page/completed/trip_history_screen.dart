@@ -693,119 +693,200 @@ class TripHistoryScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                (controller.singleRideDetails[0].numberplate ?? "").isNotEmpty
-                                    ? Column(
+                                Column(
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Customer Details",
+                                          style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w600),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Row(
                                         children: [
-                                          const Padding(
-                                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "Driver Details",
-                                                style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w600),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(50),
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  controller.singleRideDetails[0].userphoto.toString(), //controller.singleRideDetails.driverphoto.toString(),
+                                              height: 60,
+                                              width: 60,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) => Constant.loader(),
+                                              errorWidget: (context, url, error) => Image.asset(
+                                                "assets/images/user.png",
                                               ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(top: 10),
-                                            child: Row(
-                                              children: [
-                                                (controller.singleRideDetails[0].driverphoto != null && controller.singleRideDetails[0].driverphoto != "")
-                                                    ? ClipRRect(
-                                                        borderRadius: BorderRadius.circular(50),
-                                                        child: CachedNetworkImage(
-                                                          imageUrl: controller.singleRideDetails[0].driverphoto
-                                                              .toString(), //controller.singleRideDetails.driverphoto.toString(),
-                                                          height: 60,
-                                                          width: 60,
-                                                          fit: BoxFit.cover,
-                                                          placeholder: (context, url) => Constant.loader(),
-                                                          errorWidget: (context, url, error) => Image.asset(
-                                                            "assets/images/user.png",
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Image.asset(
-                                                        "assets/images/user.png",
-                                                        height: 60,
-                                                        width: 60,
-                                                      ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.only(left: 8.0),
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                            controller.singleRideDetails[0].numberplate ??
-                                                                "", //controller.singleRideDetails.numberplate.toString(),
-                                                            style: const TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w600)),
-                                                        const SizedBox(height: 6),
-                                                        Text(
-                                                            "${controller.singleRideDetails[0].drivername ?? "" /*controller.data.value.prenomConducteur.toString() */} ", //controller.data.value.nomConducteur.toString()
-                                                            style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
-                                                      ],
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 8.0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                      controller.singleRideDetails[0].consumerName ?? "", //controller.singleRideDetails.numberplate.toString(),
+                                                      style: const TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w600)),
+                                                  const SizedBox(height: 6),
+                                                  Text(
+                                                      controller.singleRideDetails[0].rideRequiredOnDate
+                                                          .toString(), //controller.data.value.nomConducteur.toString()
+                                                      style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                                  const SizedBox(height: 6),
+                                                  Text(
+                                                      "${controller.singleRideDetails[0].phone ?? "" /*controller.data.value.prenomConducteur.toString() */} ", //controller.data.value.nomConducteur.toString()
+                                                      style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 10),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    Constant.makePhoneCall(controller.singleRideDetails[0].phone ?? "");
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets.all(5.0), // Adjust the padding as needed
+                                                    decoration: const BoxDecoration(
+                                                      // color: ConstantColors.primary, // Background color
+                                                      shape: BoxShape.circle, // Makes the container circular
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.call,
+                                                      color: ConstantColors.primary, // Icon color
+                                                      size: 24.0, // Icon size
                                                     ),
                                                   ),
                                                 ),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Visibility(
+                                  visible: (controller.singleRideDetails[0].bookforOthersName != null &&
+                                          controller.singleRideDetails[0].bookforOthersName!.isNotEmpty)
+                                      ? true
+                                      : false,
+                                  child: Column(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            "Booked By",
+                                            style: TextStyle(color: Colors.black54, fontSize: 16, fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(left: 8.0),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 10),
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          Constant.makePhoneCall(controller.singleRideDetails[0].driverPhone ?? "");
-                                                        },
-                                                        child: Container(
-                                                          padding: const EdgeInsets.all(5.0), // Adjust the padding as needed
-                                                          decoration: const BoxDecoration(
-                                                            // color: ConstantColors.primary, // Background color
-                                                            shape: BoxShape.circle, // Makes the container circular
-                                                          ),
-                                                          child: Icon(
-                                                            Icons.call,
-                                                            color: ConstantColors.primary, // Icon color
-                                                            size: 24.0, // Icon size
-                                                          ),
-                                                        ),
+                                                    Text(
+                                                        controller.singleRideDetails[0].bookforOthersName ??
+                                                            "", //controller.singleRideDetails.numberplate.toString(),
+                                                        style: const TextStyle(color: Colors.black87, fontSize: 16, fontWeight: FontWeight.w600)),
+                                                    const SizedBox(height: 6),
+                                                    Text(
+                                                        "${controller.singleRideDetails[0].bookforOthersMobileno ?? "" /*controller.data.value.prenomConducteur.toString() */} ", //controller.data.value.nomConducteur.toString()
+                                                        style: const TextStyle(color: Colors.black54, fontWeight: FontWeight.w500)),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 10),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Constant.makePhoneCall(controller.singleRideDetails[0].bookforOthersMobileno ?? "");
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(5.0), // Adjust the padding as needed
+                                                      decoration: const BoxDecoration(
+                                                        // color: ConstantColors.primary, // Background color
+                                                        shape: BoxShape.circle, // Makes the container circular
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.call,
+                                                        color: ConstantColors.primary, // Icon color
+                                                        size: 24.0, // Icon size
                                                       ),
                                                     ),
-                                                  ],
-                                                )
+                                                  ),
+                                                ),
                                               ],
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : const SizedBox(
-                                        height: 0,
+                                            )
+                                          ],
+                                        ),
                                       ),
+                                    ],
+                                  ),
+                                ),
                                 const SizedBox(
                                   height: 20,
                                 ),
                                 Row(
                                   children: [
-                                    Visibility(
-                                      visible: true,
-                                      child: Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(bottom: 5),
-                                          child: ButtonThem.buildBorderButton(
-                                            context,
-                                            title: '${controller.singleRideDetails[0].payment}',
-                                            btnHeight: 45,
-                                            btnWidthRatio: 0.8,
-                                            btnColor: Colors.white,
-                                            txtColor: Colors.black.withOpacity(0.60),
-                                            btnBorderColor: Colors.black.withOpacity(0.20),
-                                            onPress: () async {
-                                              // buildShowBottomSheet(context, data, controller);
-                                            },
-                                          ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(bottom: 5),
+                                        child: ButtonThem.buildBorderButton(
+                                          context,
+                                          title: '${controller.singleRideDetails[0].payment}',
+                                          btnHeight: 45,
+                                          btnWidthRatio: 0.8,
+                                          btnColor: Colors.white,
+                                          txtColor: Colors.black.withOpacity(0.60),
+                                          btnBorderColor: Colors.black.withOpacity(0.20),
+                                          onPress: () async {
+                                            // buildShowBottomSheet(context, data, controller);
+                                          },
                                         ),
                                       ),
                                     ),
+                                    // Expanded(
+                                    //   child: Padding(
+                                    //     padding: const EdgeInsets.only(bottom: 5),
+                                    //     child: ButtonThem.buildBorderButton(
+                                    //       context,
+                                    //       title: 'Cancel',
+                                    //       btnHeight: 45,
+                                    //       btnWidthRatio: 0.8,
+                                    //       btnColor: Colors.white,
+                                    //       txtColor: Colors.black.withOpacity(0.60),
+                                    //       btnBorderColor: Colors.black.withOpacity(0.20),
+                                    //       onPress: () async {
+                                    //         // buildShowBottomSheet(context, data, controller);
+                                    //       },
+                                    //     ),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ],
