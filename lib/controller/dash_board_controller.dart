@@ -27,6 +27,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 
+import '../page/paymet/payment.dart';
 import '../themes/button_them.dart';
 import '../themes/constant_colors.dart';
 
@@ -87,6 +88,7 @@ class DashBoardController extends GetxController {
       //DrawerItem('Add Bank'.tr, Icons.account_balance),
       // DrawerItem('change_language'.tr, Icons.language),
       DrawerItem('contact_us'.tr, Icons.rate_review_outlined),
+      DrawerItem('payments'.tr, Icons.payments_outlined),
       DrawerItem('term_service'.tr, Icons.design_services),
       DrawerItem('privacy_policy'.tr, Icons.privacy_tip),
       DrawerItem('sign_out'.tr, Icons.logout),
@@ -133,10 +135,12 @@ class DashBoardController extends GetxController {
     } else if (index == 3) {
       Get.to(const ContactUsScreen());
     } else if (index == 4) {
-      Get.to(const TermsOfServiceScreen());
+      Get.to(const PaymentScreen());
     } else if (index == 5) {
-      Get.to(const PrivacyPolicyScreen());
+      Get.to(const TermsOfServiceScreen());
     } else if (index == 6) {
+      Get.to(const PrivacyPolicyScreen());
+    } else if (index == 7) {
       _showLogoutDialog(context);
     } else {
       Get.to(const NewRideScreen());
@@ -297,8 +301,10 @@ class DashBoardController extends GetxController {
       case 3:
         return const ContactUsScreen();
       case 4:
-        return const TermsOfServiceScreen();
+        return const PaymentScreen();
       case 5:
+        return const TermsOfServiceScreen();
+      case 6:
         return const PrivacyPolicyScreen();
       default:
         return Text("Error".toString());
