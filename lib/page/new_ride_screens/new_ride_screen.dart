@@ -1577,7 +1577,7 @@ buildOdoMeterAfterOtpBottomSheet(BuildContext context, NewRideController control
                           controller.rideStatus.value = "completed";
                           Get.back();
                           String googleUrl =
-                              'https://www.google.com/maps/dir/?api=1&origin=${controller.driverLatitude},${controller.driverLongitude}&destination=${double.parse(data.latitudeDepart!)},${double.parse(data.longitudeDepart!)}';
+                              'https://www.google.com/maps/dir/?api=1&origin=${controller.driverLatitude},${controller.driverLongitude}&destination=${double.parse(data.latitudeArrivee!)},${double.parse(data.longitudeArrivee!)}';
                           // 'https://www.google.com/maps/dir/?api=1&origin=17.2402684,78.4268102&destination=17.2402684,78.4268102';
                           if (await canLaunch(googleUrl)) {
                             Get.back();
