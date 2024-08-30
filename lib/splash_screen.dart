@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:get/get.dart';
+import 'controller/settings_controller.dart';
 import 'on_boarding_screen.dart';
 import 'page/auth_screens/login_screen.dart';
 import 'page/dash_board.dart';
@@ -14,10 +15,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final SettingsController settingsController = Get.put(SettingsController());
   @override
   void initState() {
     super.initState();
-
+    settingsController.getSettingsData();
     // Delay for 1.5 seconds before navigating to the next screen
     Future.delayed(const Duration(seconds: 1, milliseconds: 500), () {
       _navigateToNextScreen();

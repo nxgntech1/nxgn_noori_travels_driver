@@ -492,7 +492,7 @@ class DashBoardController extends GetxController {
 
       Map<String, dynamic> responseBody = json.decode(response.body);
       if (response.statusCode == 200) {
-        _showNotification("data collected", "$position");
+        //_showNotification("data collected", "$position");
         return responseBody;
       }
     } on TimeoutException catch (e) {
@@ -512,7 +512,7 @@ class DashBoardController extends GetxController {
     FlutterBackgroundService().invoke("setAsForeground");
     FlutterBackgroundService().invoke("setAsBackground");
 
-    _timer = Timer.periodic(const Duration(seconds: 60), (timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 120), (timer) async {
       try {
         final position = await Geolocator.getCurrentPosition();
         getdriverLocationUpdate("${position.latitude}", "${position.longitude}", position);

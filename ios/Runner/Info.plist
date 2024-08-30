@@ -47,6 +47,10 @@
     <string>We need access to your location to help you book rides from and to specific addresses, including your current location, ensuring accurate and efficient pickup and drop-off.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We need access to your location to help you book rides from and to specific addresses, including your current location, ensuring accurate and efficient pickup and drop-off.</string>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>dev.flutter.background.refresh</string>
+    </array>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>Access to the Photos is required to review order as well as to set a profile picture.</string>
     <key>NSPhotoLibraryUsageDescription</key>
